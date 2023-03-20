@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edffdb6dccaa4b779c5a23744386ef59, type: 3}
+  m_Name: CannonShootAnimationSettings
+  m_EditorClassIdentifier: 
+  normalScale: {x: 1, y: 1, z: 1}
+  preScale: {x: 1.1, y: 1, z: 0.8}
+  afterScale: {x: 0.75, y: 1, z: 1.15}
+  preTime: 0.075
+  afterTime: 0.1
+  backTime: 0.2

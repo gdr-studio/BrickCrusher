@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10a11e178d69469ca023f469e7c12d4d, type: 3}
+  m_Name: _Statues_repository
+  m_EditorClassIdentifier: 
+  data:
+  - name: {fileID: 11400000, guid: 519b45afeca401a4cb7a50633270843b, type: 2}
+    prefab: {fileID: 8249681130797335843, guid: 115b3283cf18e4d43beecd47e382a090, type: 3}
+  - name: {fileID: 11400000, guid: 49583e6daccaf3f489fbf1f448f44dc0, type: 2}
+    prefab: {fileID: 1667879115762484338, guid: c82fb64513cebdb4697385aae6eb1608, type: 3}
+  - name: {fileID: 11400000, guid: 354f294b0b85d4f4bae39e92ae907904, type: 2}
+    prefab: {fileID: 8249681130797335843, guid: 115b3283cf18e4d43beecd47e382a090, type: 3}
