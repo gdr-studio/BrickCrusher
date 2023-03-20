@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Helpers;
 using LittleTricks;
 using Statues;
 using UnityEngine;
@@ -100,11 +101,11 @@ namespace ImageToVolume
                     element.transform.localPosition = centerPos + new Vector3(xPos, yPos, 0f);
                     element.transform.localEulerAngles = localRot;
 
-                    SetSubDivData(element, uvOffset, (int)imageSize, pixels);
+                    SetSubDivData(element, uvOffset, (int)imageSize, pixels, blocksCount);
                     yPos += ySize;
                     if (alphaCheck == 0 && doSubdivide)
                     {
-                        Subdivide(element, uvOffset,  (int)imageSize, pixels);
+                        Subdivide(element, pixels, uvOffset,  (int)imageSize);
                     }
                     
                     var statueElement = (StatueElement)element;
@@ -120,16 +121,16 @@ namespace ImageToVolume
         }
 
          // 1 - fully colored, 0 - some alpha, -1 - all alpha
-         private int CheckAlpha(Vector2 offset, int blockSize, int imageSizeX, Color[] colors)
+         private int CheckAlpha(Vector2 offset, int tileSize, int imageSizeX, Color[] colors)
          {
              bool hasAlpha = false;
              bool hasColor = false;
              var startX = (int)(imageSizeX * offset.x);
              var startY= (int)(imageSizeX * offset.y);
              
-             for (int x = 0; x < blockSize; x++)
+             for (int x = 0; x < tileSize; x++)
              {
-                 for (int y = 0; y < blockSize; y++)
+                 for (int y = 0; y < tileSize; y++)
                  {
                      var index = (x + startX) + (y + startY) * imageSizeX;
                      var color = colors[index];
@@ -148,7 +149,177 @@ namespace ImageToVolume
          }
 
 
-         private void SetSubDivData(VolumeElement element, Vector2 offset, int imageSizeX, Color[] colors)
+         
+         private void Subdivide(VolumeElement element, Color[] pixels,  Vector2 elementOffset, int imageSizeX)
+         {
+             var subParts = new List<ElementSub>();
+             element.transform.localEulerAngles = Vector3.zero;
+             var startX = (int)(imageSizeX * elementOffset.x);
+             var startY= (int)(imageSizeX * elementOffset.y);
+             var factor = subDivideFactor;
+             var subSizePhys = 1f / factor;
+             var data = SubDivideArea(pixels, imageSizeX, blockSize, startX, startY, factor, subSizePhys);
+             bool oldWay = false;
+             foreach (var d in data)
+             {
+                 if (oldWay)
+                 {
+                     var inst = SpawnSubTemp(d, element, Vector3.zero);
+                     subParts.Add(inst);
+                     continue;
+                 }
+                 if (d.alphaResult == 0)
+                 {
+                     var startX2 = (int)(imageSizeX * d.offset.x);
+                     var startY2 = (int)(imageSizeX * d.offset.y);
+                     factor = 2;
+                     subSizePhys = 1f / (subDivideFactor * 2);
+                     var data2 = SubDivideArea(pixels, imageSizeX, d.tileSize, startX2, startY2, factor, subSizePhys);
+                     foreach (var d2 in data2)
+                     {
+                         if(d2.alphaResult == 0)
+                             continue;
+                         var inst = SpawnSubTemp(d2, element, d.localPos);
+                         subParts.Add(inst);
+                     }
+                 }
+                 else if(d.alphaResult == 1)
+                 {
+                     var inst = SpawnSubTemp(d, element, Vector3.zero);
+                     subParts.Add(inst);
+                 }
+           
+             }
+             element.SetSubdivided(subParts, subDivideFactor);
+         }
+
+         
+         // private void Subdivide(VolumeElement element, Color[] pixels,  Vector2 elementOffset, int imageSizeX)
+         // {
+         //     var subParts = new List<ElementSub>();
+         //
+         //     var factor = subDivideFactor;
+         //     element.transform.localEulerAngles = Vector3.zero;
+         //     var startX = (int)(imageSizeX * elementOffset.x);
+         //     var startY= (int)(imageSizeX * elementOffset.y);
+         //     var step = (float)blockSize / (float)factor;
+         //     var subPhysicalSize = 1f / factor;
+         //     var posXInd = 0;
+         //     var posYInd = 0;
+         //     
+         //     var centerQ = (float)(factor / 2);
+         //     if (factor % 2f == 0)
+         //         centerQ -= 0.5f;
+         //     
+         //     var centerVec = new Vector3(centerQ, centerQ, 0);
+         //     var tileSize = blockSize / factor;
+         //     var tilesCount = imageSizeX / tileSize;
+         //     var tiling = new Vector2(1f / tilesCount, 1f / tilesCount);
+         //     for (var x = 0f; x < blockSize; x += step)
+         //     {
+         //         for (var y = 0f; y < blockSize; y += step)
+         //         {
+         //             var xPixel = x + startX;
+         //             var yPixel = y + startY;
+         //             // var indexPixel = xPixel + yPixel * imageSizeX;
+         //             var offset = new Vector2(xPixel, yPixel) / imageSizeX;
+         //             if (CheckAlpha(offset, tileSize, imageSizeX, pixels) == -1)
+         //             {
+         //                 posYInd++;
+         //                 continue;
+         //             }
+         //             
+         //             var localpos = (new Vector3(posXInd, posYInd,0) - centerVec ) * subPhysicalSize;
+         //             var instance = SpawnSub(element.transform, localpos);
+         //             instance.SetSize(subPhysicalSize);
+         //             
+         //             instance.colorSetter.SetMaterial(mat, tiling, offset);
+         //
+         //             posYInd++;
+         //             subParts.Add(instance);
+         //         }  
+         //         posXInd++;
+         //         posYInd = 0;
+         //     }
+         //     element.SetSubdivided(subParts, subDivideFactor);
+         // }
+
+         private List<SubDivData> SubDivideArea(Color[] pixels, int imageSizeX, int areaSize, int startXPixel, int startYPixel, int factor, float physicalSize)
+         {
+             List<SubDivData> datalist = new List<SubDivData>();
+             var step = (float)areaSize / factor;
+
+             // var sizeFactor = (int)(1f / physicalSize);
+             var centerQ = (float)(factor / 2);
+             if (factor % 2f == 0)
+                 centerQ -= 0.5f;
+             var centerVec = new Vector3(centerQ, centerQ, 0);
+             
+             var tileSize = areaSize / factor;
+             var tilesCount = imageSizeX / tileSize;
+             var tiling = new Vector2(1f / tilesCount, 1f / tilesCount);
+
+             var posXInd = 0;
+             var posYInd = 0;
+             for (var x = 0f; x < areaSize; x += step)
+             {
+                 for (var y = 0f; y < areaSize; y += step)
+                 {
+                     var xPixel = x + startXPixel;
+                     var yPixel = y + startYPixel;
+                     // var indexPixel = xPixel + yPixel * imageSizeX;
+                     var offset = new Vector2(xPixel, yPixel) / imageSizeX;
+                     var alphaRes = CheckAlpha(offset, tileSize, imageSizeX, pixels);
+                     if (alphaRes == -1)
+                     {
+                         posYInd++;
+                         continue;
+                     }
+                     
+                     var localpos = (new Vector3(posXInd, posYInd,0) - centerVec ) * physicalSize;
+                     var data = new SubDivData();
+                     data.offset = offset;
+                     data.tiling = tiling;
+                     data.localPos = localpos;
+                     data.physicalSize = physicalSize;
+                     data.alphaResult = alphaRes;
+                     data.tileSize = tileSize;
+                     datalist.Add(data);
+                     posYInd++;
+                 }  
+                 posXInd++;
+                 posYInd = 0;
+             }
+             return datalist;
+         }
+
+         private ElementSub SpawnSubTemp(SubDivData data, VolumeElement element, Vector3 tempCenter)
+         {
+             var temp = new GameObject("temp");
+             temp.transform.parent = element.transform;
+             temp.transform.localPosition = tempCenter;
+
+             var instance = SpawnSub(temp.transform, data.localPos);
+             instance.SetSize(data.physicalSize);
+             instance.colorSetter.SetMaterial(mat, data.tiling, data.offset);
+             instance.transform.parent = element.transform;
+             DestroyImmediate(temp);
+             return instance;   
+         }
+
+         private class SubDivData
+         {
+             public float physicalSize;
+             public int tileSize;
+             public Vector3 localPos;
+             public Vector2 tiling;
+             public Vector3 offset;
+             public int alphaResult;
+         }
+         
+         
+         // DO NOT TOUCH
+         private void SetSubDivData(VolumeElement element, Vector2 offset, int imageSizeX, Color[] colors, int blocksCount)
          {
              var factor = normalSubDivFactor;
              var startX = (int)(imageSizeX * offset.x);
@@ -162,14 +333,14 @@ namespace ImageToVolume
                  centerQ -= 0.5f;
              var centerVec = new Vector3(centerQ, centerQ, 0);
              var allData = new List<ElementSubDropData>();
-             var tiling = new Vector2(1f / imageSizeX, 1f / imageSizeX);
+             var tiling = new Vector2(1f,1f) * (1f / blocksCount);
              for (var x = 0f; x < blockSize; x += step)
              {
                  for (var y = 0f; y < blockSize; y += step)
                  {
-                     var X = x + startX + step / 2;
-                     var Y = y + startY + step / 2;
-                     var index = X + Y * imageSizeX;
+                     var xPixel = x + startX;
+                     var yPixel = y + startY;
+                     var index = xPixel + yPixel * imageSizeX;
                      var color = colors[Mathf.RoundToInt(index)];
                      if (color.a < minAlpha)
                      {
@@ -177,7 +348,7 @@ namespace ImageToVolume
                          continue;
                      }
                      var localpos = (new Vector3(posXInd, posYInd,0) - centerVec ) * subDivBlockSize;
-                     var uvOffset = new Vector2(X/imageSizeX, Y/ imageSizeX);
+                     var uvOffset = new Vector2(xPixel/imageSizeX, yPixel/ imageSizeX);
 
                      var data = new ElementSubDropData();
                      data.localPos = localpos;
@@ -193,50 +364,6 @@ namespace ImageToVolume
              element.subdivider.SetData(allData);
          }
          
-         private void Subdivide(VolumeElement element, Vector2 offset, int imageSizeX, Color[] colors)
-         {
-             var factor = subDivideFactor;
-             element.transform.localEulerAngles = Vector3.zero;
-             var startX = (int)(imageSizeX * offset.x);
-             var startY= (int)(imageSizeX * offset.y);
-             var step = (float)blockSize / (float)factor;
-             var subDivBlockSize = 1f / factor;
-             var posXInd = 0;
-             var posYInd = 0;
-             var centerQ = (float)(factor / 2);
-             if (factor % 2f == 0)
-                 centerQ -= 0.5f;
-             var centerVec = new Vector3(centerQ, centerQ, 0);
-             var subParts = new List<ElementSub>();
-             var tiling = new Vector2(1f / imageSizeX, 1f / imageSizeX);
-             for (var x = 0f; x < blockSize; x += step)
-             {
-                 for (var y = 0f; y < blockSize; y += step)
-                 {
-                     var X = x + startX + step / 2;
-                     var Y = y + startY + step / 2;
-                     var index = X + Y * imageSizeX;
-                     var color = colors[Mathf.RoundToInt(index)];
-                     if (color.a < minAlpha)
-                     {
-                         posYInd++;
-                        continue;
-                     }
-                     var localpos = (new Vector3(posXInd, posYInd,0) - centerVec ) * subDivBlockSize;
-                     var instance = SpawnSub(element.transform, localpos);
-                     instance.SetSize(subDivBlockSize);
-                     
-                     var uvOffset = new Vector2(X/imageSizeX, Y/ imageSizeX);
-                     instance.colorSetter.SetMaterial(mat, tiling, uvOffset);
-
-                     posYInd++;
-                     subParts.Add(instance);
-                 }  
-                 posXInd++;
-                 posYInd = 0;
-             }
-             element.SetSubdivided(subParts, subDivideFactor);
-         }
          
         public void CreateByPixel()
         {
@@ -262,7 +389,6 @@ namespace ImageToVolume
             var ySize = mainPrefab.sizeY;
             var loopsCount = (int)size;
             var centerPos = GetCenter(size, xSize, ySize);
-
             for (int x = 0; x < loopsCount; x++)
             {
                 for (int y = 0; y < loopsCount; y++)
@@ -297,6 +423,9 @@ namespace ImageToVolume
             if(autoSetupNeighbours)
                 SetupNeighbours();
         }
+        
+        
+        
 
         public void SetupNeighbours()
         {

@@ -504,13 +504,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 115094308}
   m_CullTransparentMesh: 1
---- !u!1001 &413216758
+--- !u!1001 &387026688
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 1674714988}
     m_Modifications:
+    - target: {fileID: 4589819212986333864, guid: 4f573d2b72811ed4d9b115be8c975c65, type: 3}
+      propertyPath: _cannonName
+      value: 
+      objectReference: {fileID: 11400000, guid: 9c250eab210e52842bc9497670518619, type: 2}
     - target: {fileID: 4589819212986333866, guid: 4f573d2b72811ed4d9b115be8c975c65, type: 3}
       propertyPath: m_Name
       value: Level_1
@@ -561,17 +565,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f573d2b72811ed4d9b115be8c975c65, type: 3}
---- !u!114 &413216759 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4589819212986333864, guid: 4f573d2b72811ed4d9b115be8c975c65, type: 3}
-  m_PrefabInstance: {fileID: 413216758}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb04ffacb11248c4ba31827685dfca46, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &442794466
 GameObject:
   m_ObjectHideFlags: 0
@@ -735,7 +728,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -1244,6 +1237,17 @@ MonoBehaviour:
   _scaleTarget: {fileID: 1910735201}
   _smallScale: 0.7
   _scaleTime: 0.2
+--- !u!114 &1495676648 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4589819212986333864, guid: 4f573d2b72811ed4d9b115be8c975c65, type: 3}
+  m_PrefabInstance: {fileID: 387026688}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb04ffacb11248c4ba31827685dfca46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1514059198
 GameObject:
   m_ObjectHideFlags: 0
@@ -2490,7 +2494,7 @@ PrefabInstance:
     - target: {fileID: 3630545584203590699, guid: 1fa888e35b52e3848bf4ef3694363643, type: 3}
       propertyPath: CurrentLoadedLevel
       value: 
-      objectReference: {fileID: 413216759}
+      objectReference: {fileID: 1495676648}
     - target: {fileID: 3630545584203590699, guid: 1fa888e35b52e3848bf4ef3694363643, type: 3}
       propertyPath: Levels.Array.data[0]
       value: 

@@ -21,9 +21,11 @@ namespace ImageToVolume
                 scaleZ *= parent.localScale.z;
                 parent = parent.parent;
             }
-            crack.ShowAt(transform.position, scaleX, scaleZ,-transform.forward);
+            crack.ShowAt(new Vector3(0f, 0f, -transform.localScale.z / 2), transform, -Vector3.forward);
+            // crack.ShowAt(transform.position, scaleX, scaleZ,-transform.forward);
             crack.Rotate(transform.rotation);
         }
+        
 
         public void Hide()
         {

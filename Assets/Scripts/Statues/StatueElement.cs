@@ -46,7 +46,19 @@ namespace Statues
             if (_cracked)
                 return;
             _cracked = true;
-            PlayDamagedAnim();
+            DamageHighlight();
+            // SetCrack();
+            // PlayDamagedAnim();
+            // foreach (var neighbourIndex in neighbourIndices)
+            // {
+            //    var ste =  (StatueElement)statue.Puzzle[neighbourIndex];
+            //    ste.PlayDamagedAsNeighbour();
+            // }
+        }
+
+        private void DamageHighlight()
+        {
+            
         }
 
         private void SetCrack()
@@ -69,6 +81,8 @@ namespace Statues
         public void Break()
         {
             _moveSeq?.Kill();
+            
+            
             piece.HideSelf();
             renderer.enabled = false;
             IsBroken = true;
@@ -83,7 +97,6 @@ namespace Statues
             }
             statue.BrokenCount++;
             subdivider.PushRandom();
-
         }
 
         public void Push()
@@ -102,10 +115,25 @@ namespace Statues
         {
             _moveSeq?.Kill();
             _moveSeq = DOTween.Sequence();
+            var dur = _config.ElementShakeDur;
+            var sign = UnityEngine.Random.Range(-1f, 1f);
+            sign = Mathf.Sign(sign);
             var endPos = localStartPos;
-            endPos.z += _config.ElementShakeMagn;
-            _moveSeq.Append(transform.DOLocalMove(endPos, _config.ElementShakeDur))
-                .Append(transform.DOLocalMove(localStartPos, _config.ElementShakeDur).OnComplete(SetCrack));
+            var magn = UnityEngine.Random.Range(_config.ElementShakeMagnMin, _config.ElementShakeMagnMax);
+            endPos.z += magn * sign;
+            _moveSeq.Append(transform.DOLocalMove(endPos, dur))
+                .Append(transform.DOLocalMove(localStartPos, dur));
+        }
+
+        public void PlayDamagedAsNeighbour()
+        {
+            _moveSeq?.Kill();
+            _moveSeq = DOTween.Sequence();
+            var dur = _config.ElementShakeDur;
+            var sign = UnityEngine.Random.Range(-1f, 1f);
+            sign = Mathf.Sign(sign);
+            var mag = UnityEngine.Random.Range(_config.ElementNeighbourShakeMagnMin, _config.ElementNeighbourShakeMagnMax);
+            _moveSeq.Append(transform.DOShakePosition(dur, mag * sign, 50, 50));
         }
         
     }

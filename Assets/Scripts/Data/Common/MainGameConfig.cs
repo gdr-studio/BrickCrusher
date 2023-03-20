@@ -8,7 +8,11 @@ namespace Data
         [Header("Cannons")]
         public float CannonMoveSpeed = 50;
         [Header("StatueElements")]
-        public float ElementShakeMagn = 0.1f;
+        public float ElementShakeMagnMin = 0.1f;
+        public float ElementShakeMagnMax = 0.2f;
+        public float ElementNeighbourShakeMagnMin = 0.1f;
+        public float ElementNeighbourShakeMagnMax = 0.2f;
+
         public float ElementShakeDur = 0.2f;
         [Space(5)]
         public float ElementDropPushForce;

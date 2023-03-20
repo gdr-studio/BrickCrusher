@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: MainGameConfig
   m_EditorClassIdentifier: 
   CannonMoveSpeed: 38
-  ElementShakeMagn: 1
-  ElementShakeDur: 0.12
-  ElementDropPushForce: 3
+  ElementShakeMagnMin: 0.75
+  ElementShakeMagnMax: 1.125
+  ElementNeighbourShakeMagnMin: 0.1
+  ElementNeighbourShakeMagnMax: 0.2
+  ElementShakeDur: 0.1
+  ElementDropPushForce: 4
   ElementDownForceAdd: 1

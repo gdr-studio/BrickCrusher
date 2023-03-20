@@ -4,6 +4,5 @@
     {
         void Damage(DamageArgs args);
         void Break();
-        void Push();
     }
 }

@@ -47,13 +47,6 @@ namespace Weapons
                 piece.Damage(damage);
             }
             
-            // then push all of them
-            for (var i = 0; i < results.Length; i++)
-            {
-                var block = results[i];
-                var piece = block.GetComponent<Collider>().gameObject.GetComponent<IStatuePiece>();
-                piece.Push();
-            }
         }
 
         public void Hide()

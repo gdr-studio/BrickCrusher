@@ -44,6 +44,9 @@ namespace ImageToVolume
             {
                 part.gameObject.layer = layers.DroppedPiecesLayer;
                 part.DropAsRb();
+                var scale = part.transform.localScale;
+                scale.z = scale.x;
+                part.transform.localScale = scale;
             }            
         }
 
