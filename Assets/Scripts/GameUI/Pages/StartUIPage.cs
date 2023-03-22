@@ -30,6 +30,7 @@ namespace GameUI
             _mergingUI.ShowPage(false);
             _moneyUIPage.ShowPage(false);
             OnWeaponChosen(_mergingUI.MergeActiveRow.hasChosen.Val);
+            _button.gameObject.SetActive(false);
             _mergingUI.MergeActiveRow.hasChosen.SubOnChange(OnWeaponChosen);
         }
 
@@ -71,6 +72,7 @@ namespace GameUI
         
         private void OnWeaponChosen(bool chosen)
         {
+            return;
             if (chosen)
             {
                 _startButtonScaler.ShowScaling(_buttonScalingTime, () =>
