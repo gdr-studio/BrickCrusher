@@ -23,10 +23,10 @@ namespace Merging
 
         public void Init()
         {
-            CheckPurchase();
+            CheckPurchasable();
         }
         
-        public void CheckPurchase()
+        public void CheckPurchasable()
         {
             var money = MoneyCounter.TotalMoney.Val;
             var cost = config.FirstLevelCannonCost;
@@ -44,10 +44,7 @@ namespace Merging
         {
             foreach (var area in areas)
             {
-                if (area.IsEmpty())
-                {
-                    area.HideCost();
-                }
+                area.HideCost();
             }      
         }
         

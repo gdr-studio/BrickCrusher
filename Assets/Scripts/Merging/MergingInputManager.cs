@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Helpers;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -22,7 +21,7 @@ namespace Merging
         public Image movingImage;
         private MovingData _movingData;
         private Camera _camera;
-        
+
         private bool _isEnabled;
         public bool IsEnabled
         {
@@ -47,7 +46,7 @@ namespace Merging
             if (Input.GetMouseButtonDown(0))
             {
                 var results = RaycastUI();
-                ProcessUIOnDown(results);
+                ProcessUIOnClick(results);
             }   
             else if (Input.GetMouseButtonUp(0))
             {
@@ -63,7 +62,7 @@ namespace Merging
             }
         }
 
-        private void ProcessUIOnDown(List<RaycastResult> results)
+        private void ProcessUIOnClick(List<RaycastResult> results)
         {
             foreach (var result in results)
             {
@@ -103,11 +102,12 @@ namespace Merging
                 return;
             foreach (var result in results)
             {
-                var cannon = result.collider.gameObject.GetComponent<Cannon>();
+                var cannon = result.collider.gameObject.GetComponent<CannonSpawnable>();
                 if (cannon != null)
                 {
                     _collection.CallRemoveCannon(cannon);
-                    _purchaser.ReturnMoney(cannon.cannonName);
+                    cannon.MergingArea.SetDataBack();
+                    // _purchaser.ReturnMoney(cannon.cannonName);
                 }
             }
         }
@@ -119,9 +119,7 @@ namespace Merging
             {
                 if (_movingData.IsSpawned)
                 {
-                    // Debug.Log("is ON ui and spawned");
-                    _collection.CallRemoveLast();
-                    _movingData.IsSpawned = false;
+                    RemoveLastSpawned();
                 }
                 return;
             }
@@ -133,9 +131,22 @@ namespace Merging
                 return;
             if (RaycastWorld(_spawnMask).Length > 0)
             {
-                _collection.CallSpawnCannon(_movingData.data);
-                _movingData.IsSpawned = true;
+                Spawn();
             }
+        }
+
+        private void RemoveLastSpawned()
+        {
+            // Debug.Log("is ON ui and spawned");
+            _collection.CallRemoveLast();
+            _movingData.IsSpawned = false;
+        }
+        
+        private void Spawn()
+        {
+            _collection.CallSpawnCannon(_movingData.data, _movingData.fromArea);
+            _movingData.fromArea.SetSpawned();
+            _movingData.IsSpawned = true;
         }
 
         private bool IsOverUI()
@@ -162,10 +173,13 @@ namespace Merging
 
         private void PickFrom(MergingItemArea area)
         {
+            if (area.IsTaken)
+                return;
             var otherData = area.currentData;
             if (otherData == null)
             {
                 _purchaser.TryPurchase(area);
+                _purchaser.CheckPurchasable();
                 return;
             }
             _movingData.fromArea = area;
@@ -179,31 +193,42 @@ namespace Merging
             // Dbg.Red("Drop at");
             if (_movingData.data == null)
             {
-                _purchaser.CheckPurchase();
+                _purchaser.CheckPurchasable();
                 return;
             }
             if (_movingData.IsSpawned)
             {
                 _movingData.HideAndClear();
-                _purchaser.CheckPurchase();
+                _purchaser.CheckPurchasable();
                 return;
             }
             if (area == null)
                 _movingData.fromArea.SetData(_movingData.data);
             else
             {
-                // Empty or the same we took it from (should be empty)
-                if (area.IsEmpty())
+                if (area.IsEmpty()) // empty cell
+                {
                     area.SetData(_movingData.data);
+                    _movingData.fromArea.SetEmpty();
+                }
                 else
                 {
-                    var merged = _mergingLogic.Merge(_movingData.data, area);
-                    if (!merged)
-                        _movingData.fromArea.SetData(_movingData.data);
+                    if (area == _movingData.fromArea) // same cell
+                    {
+                        area.SetData(_movingData.data);
+                    }
+                    else // different cell
+                    {
+                        var merged = _mergingLogic.Merge(_movingData.data, area);
+                        if (!merged)
+                            _movingData.fromArea.SetData(_movingData.data);
+                        else
+                            _movingData.fromArea.SetEmpty();        
+                    }
                 }
             }
             _movingData.HideAndClear();
-            _purchaser.CheckPurchase();
+            _purchaser.CheckPurchasable();
         }
         
         private void Move(Vector2 moveDir)

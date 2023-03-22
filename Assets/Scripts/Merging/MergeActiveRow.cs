@@ -41,7 +41,7 @@ namespace Merging
                 if(area.IsEmpty() == false)
                     current.Add(area.currentData);
             }
-            playerCollection.currentChoice = current;
+            // playerCollection.currentChoice = current;
         }
     }
 }

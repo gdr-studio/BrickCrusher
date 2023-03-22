@@ -34,51 +34,44 @@ namespace Levels.Game
             {
                 cannonsController.cannons.Add(spawnable.cannon);
             }
+            cannonsController.Init();
             onEnd?.Invoke();
         }
         
         
         // ReSharper disable Unity.PerformanceAnalysis
-        private void PreStartSpawn(MergingData data)
+        private void PreStartSpawn(MergingData data, MergingItemArea area)
         {
             var count = _spawnedCannons.Count + 1;
             var positions = CalculatePositions(count);
             RepositionSpawned(positions);
             var lastPos = positions[count - 1];
-            SpawnCannon(data.cannonName, lastPos);
-        } 
-
-        private void RepositionSpawned(List<Vector3> positions)
-        {
-            for (int i = 0; i < _spawnedCannons.Count; i++)
-            {
-                _spawnedCannons[i].Move(positions[i]);
-                // _spawnedCannons[i].transform.position = positions[i];
-            }
+            var spawnable = SpawnCannon(data.cannonName, lastPos);
+            spawnable.MergingArea = area;
+            collection.SpawnedCount.Val++;
         }
 
-        private void PreStartRemove(Cannon cannon)
+        private void PreStartRemove(CannonSpawnable cannonSpawnable)
         {
-            Dbg.Yellow($"Removing a cannon");
-            var spawnable = _spawnedCannons.Find(t => t.cannon == cannon);
-            _spawnedCannons.Remove(spawnable);
-            // Destroy(cannon.gameObject);
-            spawnable.Delete();
+            _spawnedCannons.Remove(cannonSpawnable);
+            collection.SpawnedCount.Val--;
+            cannonSpawnable.Delete();
             if (_spawnedCannons.Count == 0)
                 return;
             var positions = CalculatePositions(_spawnedCannons.Count);
             RepositionSpawned(positions);
+
         }
 
         private void PreStartRemoveLast()
         {
             var count = _spawnedCannons.Count - 1;
+            collection.SpawnedCount.Val--;
             var positions = CalculatePositions(count);
             var lastCannon = _spawnedCannons[count];
             _spawnedCannons.Remove(lastCannon);
             lastCannon.Delete();
             RepositionSpawned(positions);
-            // Destroy(lastCannon.gameObject);
         }
 
         private bool PreCanSpawn()
@@ -86,9 +79,17 @@ namespace Levels.Game
             return _spawnedCannons.Count < maxCount;
         }
         
+        
+        private void RepositionSpawned(List<Vector3> positions)
+        {
+            for (int i = 0; i < _spawnedCannons.Count; i++)
+            {
+                _spawnedCannons[i].Move(positions[i]);
+            }
+        }
  
 
-        private void SpawnCannon(CannonName cannonName, Vector3 position)
+        private CannonSpawnable SpawnCannon(CannonName cannonName, Vector3 position)
         {
             var prefab = cannonsRepository.GetPrefab(cannonName);
             var instance = _container.InstantiatePrefabForComponent<Cannon>(prefab, cannonsController.transform);
@@ -97,7 +98,7 @@ namespace Levels.Game
             _spawnedCannons.Add(instance.GetComponent<CannonSpawnable>());
             var spawnable = instance.gameObject.GetComponent<CannonSpawnable>();
             spawnable.Spawn();
-            // cannonsController.cannons.Add(instance);
+            return spawnable;
         }
         
         private List<Vector3> CalculatePositions(int count)

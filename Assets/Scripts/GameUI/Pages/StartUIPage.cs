@@ -12,6 +12,7 @@ namespace GameUI
         [Inject] private IUIManager _uiManager;
         [SerializeField] private List<PulsingAnimator> _animators;
         [SerializeField] private MergingUIPage _mergingUI;
+        [SerializeField] private PlayerWeaponCollection _collection;
         [SerializeField] private MoneyUIPage _moneyUIPage;
         [SerializeField] private PulsingAnimator _startButtonScaler;
         [SerializeField] private float _buttonScalingTime = 0.35f;
@@ -24,14 +25,12 @@ namespace GameUI
             _button.interactable = true;
             _button.OnDown += OnClick;
             foreach (var animator in _animators)
-            {
                 animator.StartScaling();
-            }
             _mergingUI.ShowPage(false);
             _moneyUIPage.ShowPage(false);
-            OnWeaponChosen(_mergingUI.MergeActiveRow.hasChosen.Val);
-            _button.gameObject.SetActive(false);
-            _mergingUI.MergeActiveRow.hasChosen.SubOnChange(OnWeaponChosen);
+            // _button.gameObject.SetActive(false);
+            OnSpawnedCount(0);
+            _collection.SpawnedCount.SubOnChange(OnSpawnedCount);
         }
 
         public override void HidePage(bool fast)
@@ -46,7 +45,7 @@ namespace GameUI
                 animator.StopScaling();
             }
             _mergingUI.HidePage(false);
-            // _moneyUIPage.HidePage(false);
+            _collection.SpawnedCount.UnsubOnChange(OnSpawnedCount);
         }
 
         public override void OnClick()
@@ -55,7 +54,6 @@ namespace GameUI
             if (GlobalData.CurrentLevel != null)
             {
                 GlobalData.CurrentLevel.StartLevel();
-                
             }
             else
             {
@@ -68,12 +66,9 @@ namespace GameUI
             _header.text = text;
         }
         
-        
-        
-        private void OnWeaponChosen(bool chosen)
+        private void OnSpawnedCount(int count)
         {
-            return;
-            if (chosen)
+            if (count > 0)
             {
                 _startButtonScaler.ShowScaling(_buttonScalingTime, () =>
                 {
@@ -84,7 +79,7 @@ namespace GameUI
             else
             {
                 _button.interactable = false;
-                _startButtonScaler.HideScaling(_buttonScalingTime, () =>
+                _startButtonScaler.HideScaling(0f, () =>
                 {
                 });   
             }

@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using Merging;
 using UnityEngine;
 
 namespace Weapons
@@ -12,6 +13,7 @@ namespace Weapons
         public float MoveTime = 0.5f;
         public float ScaleTime = 0.5f;
 
+        public MergingItemArea MergingArea { get; set; }
         public void Spawn()
         {
             transform.localScale = Vector3.zero;

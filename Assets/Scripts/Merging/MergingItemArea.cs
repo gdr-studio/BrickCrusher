@@ -1,4 +1,5 @@
 ﻿using System;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,14 @@ namespace Merging
         public MergingData currentData;
         public TextMeshProUGUI levelText;
         public CostBlock costBlock;
+        public Color spawnedColor;
+        [Space(20)] 
+        [SerializeField] private float _punchScale = 1.2f;
+        [SerializeField] private float _punchDur = 0.2f;
+        
+        public bool IsTaken { get; set; }
+        public bool IsEmpty() => currentData == null;
+
         public event Action<MergingItemArea> OnDataSet;
         
         private void OnEnable()
@@ -34,32 +43,36 @@ namespace Merging
         {
             currentData = data;
             UpdateByData();
+            IsTaken = false;
             OnDataSet?.Invoke(this);
             // Debug.Log($"area: {gameObject.name}, sprite: {data.sprite.name}");
         }
 
         public void TakeFrom()
         {
-            SetEmpty();
+            // SetEmpty();
+            SetTaken();
             OnDataSet?.Invoke(this);
         }
 
-        public bool IsEmpty() => currentData == null;
         
         private void UpdateByData()
         {
+            SetAvailable();
             image.enabled = true;
             image.sprite = currentData.sprite;
             levelText.enabled = true;
             levelText.text = $"{currentData.level}";   
         }
 
-        private void SetEmpty()
+        public void SetEmpty()
         {
+            SetAvailable();
             image.sprite = null;
             image.enabled = false;
             currentData = null;
             levelText.enabled = false;
+            IsTaken = false;
         }
 
         public void ShowCost(int cost)
@@ -72,6 +85,29 @@ namespace Merging
             costBlock.Hide();
         }
 
+        public void SetSpawned()
+        {
+            image.color = spawnedColor;
+            IsTaken = true;
+        }
+
+        public void SetTaken()
+        {
+            image.color = spawnedColor;
+            IsTaken = true;
+        }
+
+        private void SetAvailable()
+        {
+            image.color = Color.white;
+        }
+        
+        public void SetDataBack()
+        {
+            UpdateByData();
+            IsTaken = false;
+            transform.DOPunchScale(_punchScale * Vector3.one, _punchDur);
+        }
  
     }
 }

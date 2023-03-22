@@ -134,6 +134,12 @@ namespace VFX.Animations.Impl
         
         private IEnumerator Scaling(Vector3 start, Vector3 end, float time, Action onEnd)
         {
+            if (time <= 0.00001f)
+            {
+                Target.localScale = end;
+                onEnd?.Invoke();
+                yield break;
+            }
             var elapsed = 0f;
             while (elapsed <= time)
             {

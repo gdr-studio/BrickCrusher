@@ -53,7 +53,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb04ffacb11248c4ba31827685dfca46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cannon: {fileID: 0}
   statue: {fileID: 0}
   _borders: {fileID: 4286541426779794137}
   _statueName: {fileID: 11400000, guid: 519b45afeca401a4cb7a50633270843b, type: 2}
@@ -357,6 +356,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7690688558846574837, guid: 7afbb85e4247a38408ae334bc3a7bd00, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690688558846574839, guid: 7afbb85e4247a38408ae334bc3a7bd00, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690688558846574839, guid: 7afbb85e4247a38408ae334bc3a7bd00, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690688558846574839, guid: 7afbb85e4247a38408ae334bc3a7bd00, type: 3}
+      propertyPath: m_ReceiveShadows
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7690688558846574841, guid: 7afbb85e4247a38408ae334bc3a7bd00, type: 3}
