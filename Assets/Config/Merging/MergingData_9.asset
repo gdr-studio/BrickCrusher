@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 536d5751472c4cb0a716c216f659ff86, type: 3}
-  m_Name: MergingData_2
+  m_Name: MergingData_9
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 9ecb48ab00943c344a3a944c90e75148, type: 3}
-  cannonName: {fileID: 11400000, guid: 265a7b39c7a1b8042b11278fdd68d0f7, type: 2}
-  level: 2
+  sprite: {fileID: 21300000, guid: b191d266693aa194bb999e98f4f4cbe4, type: 3}
+  cannonName: {fileID: 11400000, guid: 7bb8df7ade417f341b72d442dd319b2d, type: 2}
+  level: 256
