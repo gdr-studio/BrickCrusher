@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9cdf1cf0401b4807a778d30967c30589, type: 3}
-  m_Name: CannonSettings_default
+  m_Name: CannonSettings_1
   m_EditorClassIdentifier: 
   shooting:
     cannonBall: {fileID: 11400000, guid: e36f00deeaac4064b9433840b780a057, type: 2}

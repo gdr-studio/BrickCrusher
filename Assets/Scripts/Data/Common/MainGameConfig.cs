@@ -5,6 +5,11 @@ namespace Data
     [CreateAssetMenu(fileName = nameof(MainGameConfig), menuName = "SO/" + nameof(MainGameConfig))]
     public class MainGameConfig : ScriptableObject
     {
+        [Header("Merging")] 
+        public float BlockDamageColorTime = 0.4f;
+        public float BlockDamageEndGray = 0.7f;
+        [Header("Merging")] 
+        public int FirstLevelCannonCost = 10;        
         [Header("Cannons")]
         public float CannonMoveSpeed = 50;
         [Header("StatueElements")]

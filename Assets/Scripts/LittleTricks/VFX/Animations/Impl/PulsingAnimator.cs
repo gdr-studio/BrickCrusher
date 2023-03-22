@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using System;
 
 namespace VFX.Animations.Impl
 {
@@ -15,7 +16,6 @@ namespace VFX.Animations.Impl
         [SerializeField] private float _scaleDownTime;
         [SerializeField] private AnimationCurve _curveUp;
         [SerializeField] private AnimationCurve _curveDown;
-
         
         private Coroutine _scaling;
         
@@ -118,5 +118,36 @@ namespace VFX.Animations.Impl
             }
             Target.localScale = end;
         }
+
+        
+        public void HideScaling(float time, Action onEnd)
+        {
+            StopScaling();
+            _scaling = StartCoroutine(Scaling(Target.localScale, Vector3.zero, time, onEnd));
+        }
+        
+        public void ShowScaling(float time, Action onEnd)
+        {
+            StopScaling();
+            _scaling = StartCoroutine(Scaling(Target.localScale, _normalScale, time, onEnd));
+        }
+        
+        private IEnumerator Scaling(Vector3 start, Vector3 end, float time, Action onEnd)
+        {
+            var elapsed = 0f;
+            while (elapsed <= time)
+            {
+                var scale = Vector3.Lerp(start, end, elapsed / time);
+                Target.localScale = scale;
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+            Target.localScale = end;
+            onEnd?.Invoke();
+            
+        }
+        
+        
+        
     }
 }

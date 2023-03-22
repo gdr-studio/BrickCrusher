@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Data.Game;
+using Helpers;
+using Merging;
 using UnityEngine;
 using VFX.Animations.Impl;
 using Zenject;
@@ -10,7 +12,11 @@ namespace GameUI
     {
         [Inject] private IUIManager _uiManager;
         [SerializeField] private List<PulsingAnimator> _animators;
-
+        [SerializeField] private MergingUIPage _mergingUI;
+        [SerializeField] private MoneyUIPage _moneyUIPage;
+        [SerializeField] private PulsingAnimator _startButtonScaler;
+        [SerializeField] private float _buttonScalingTime = 0.35f;
+        
         public override void ShowPage(bool fast)
         {
             base.ShowPage(fast);
@@ -20,6 +26,10 @@ namespace GameUI
             {
                 animator.StartScaling();
             }
+            _mergingUI.ShowPage(false);
+            _moneyUIPage.ShowPage(false);
+            OnWeaponChosen(_mergingUI.ActivateRow.hasChosen.Val);
+            _mergingUI.ActivateRow.hasChosen.SubOnChange(OnWeaponChosen);
         }
 
         public override void HidePage(bool fast)
@@ -31,19 +41,50 @@ namespace GameUI
             {
                 animator.StopScaling();
             }
+            _mergingUI.HidePage(false);
+            // _moneyUIPage.HidePage(false);
         }
 
         public override void OnClick()
         {
-            GlobalData.CurrentLevel.StartLevel();
             _uiManager.ShowProgress();
-            
+            if (GlobalData.CurrentLevel != null)
+            {
+                GlobalData.CurrentLevel.StartLevel();
+                
+            }
+            else
+            {
+                Debug.Log("no start level");
+            }
         }
 
         public override void SetHeader(string text)
         {
             _header.text = text;
         }
+        
+        
+        
+        private void OnWeaponChosen(bool chosen)
+        {
+            if (chosen)
+            {
+                _startButtonScaler.ShowScaling(_buttonScalingTime, () =>
+                {
+                    _button.interactable = true;
+                    _startButtonScaler.StartScaling();
+                });
+            }
+            else
+            {
+                _button.interactable = false;
+                _startButtonScaler.HideScaling(_buttonScalingTime, () =>
+                {
+                });   
+            }
+        }
+
 
     }
 }

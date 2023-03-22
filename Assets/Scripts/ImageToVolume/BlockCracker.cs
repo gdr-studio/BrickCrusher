@@ -1,10 +1,13 @@
-﻿using Statues.Cracking;
+﻿using Data;
+using Statues.Cracking;
 using UnityEngine;
 
 namespace ImageToVolume
 {
     public class BlockCracker : MonoBehaviour
     {
+        public ColorSetter colorSetter;
+        public MainGameConfig config;
         private CrackTexture _crack;
         private bool _cracked;
         
@@ -22,8 +25,9 @@ namespace ImageToVolume
                 parent = parent.parent;
             }
             crack.ShowAt(new Vector3(0f, 0f, -transform.localScale.z / 2), transform, -Vector3.forward);
-            // crack.ShowAt(transform.position, scaleX, scaleZ,-transform.forward);
             crack.Rotate(transform.rotation);
+            var startColor = Color.red * 0.75f;
+            colorSetter.SetColor( startColor, Color.white * config.BlockDamageEndGray, config.BlockDamageColorTime);
         }
         
 

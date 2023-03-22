@@ -9,12 +9,13 @@ namespace Main.Boot
 {
     public class GameBoot : MonoBehaviour
     {
+        public bool doLoadLevels;
         [SerializeField] private SceneContext _context;
         [Inject] private ILevelManager _levelManager;
         [Inject] private ISoundManager _soundManager;
         [Inject] private IInputManager _input;
-        [Inject] private IUIManager _uiManager;
         [Inject] private ActionFilter _actions;
+        [Inject] private IUIManager _uiManager;
         
         private void Awake()
         {
@@ -23,10 +24,11 @@ namespace Main.Boot
 
         private void Start()
         {
-            _levelManager.LoadLast();
-            _input.IsEnabled = true;
-            _actions.IsEnabled = true;
-            _uiManager.ShowProgress();
+            if(doLoadLevels)
+                _levelManager.LoadLast();
+            _input.IsEnabled = false;
+            _actions.IsEnabled = false;
+            _uiManager.Init();
         }
     }
 }

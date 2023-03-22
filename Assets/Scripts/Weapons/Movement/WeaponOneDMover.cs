@@ -1,9 +1,8 @@
-﻿using Data;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Weapons.Movement
 {
-    public class WeaponOneDMover : MonoBehaviour,IWeaponMover 
+    public class WeaponOneDMover : MonoBehaviour, IWeaponMover 
     {
         public Transform moveTarget;
         public float Limit;

@@ -22,7 +22,7 @@ namespace Statues.Cracking
         {
             transform.parent = parent;
             transform.localScale = Vector3.one;
-            transform.localPosition = localPos + offsetDir * (forwardOffset + 0.5f);
+            transform.localPosition = localPos + offsetDir * (forwardOffset);
             gameObject.SetActive(true);
         }
 

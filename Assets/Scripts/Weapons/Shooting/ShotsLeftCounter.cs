@@ -1,6 +1,7 @@
 ﻿using System;
 using Data.Game;
 using DG.Tweening;
+using React;
 using TMPro;
 using UnityEngine;
 
@@ -15,21 +16,16 @@ namespace Weapons.Shooting
         [SerializeField] private float _scaleTime;
         [SerializeField] private Ease _scaleEase;
         private Sequence _scaling;
-        
 
-        public void Init()
+        public void Init(ReactiveProperty<int> shotsLeft)
         {
-            GlobalData.ShotsLeft.SubOnChange( OnCountChange );   
+            shotsLeft.SubOnChange(OnCountChange);
             transform.rotation = Quaternion.identity;
-            SetCount();
+            SetCount(shotsLeft.Val);
         }
 
-        private void OnDisable()
-        {
-            GlobalData.ShotsLeft.UnsubOnChange( OnCountChange );
-        }
 
-        private void OnCountChange(float val)
+        private void OnCountChange(int val)
         {
             if (_scaling != null)
                 return;
@@ -37,14 +33,14 @@ namespace Weapons.Shooting
             _scaleTarget.localScale = Vector3.one * _normalScale;
             _scaling.Append(
                     _scaleTarget.DOScale(Vector3.one * _smallScale, _scaleTime).SetEase(_scaleEase)
-                        .OnComplete(() => { SetCount(); })
+                        .OnComplete(() => { SetCount(val); })
                 ).Append(_scaleTarget.DOScale(Vector3.one * _normalScale, _scaleTime).SetEase(_scaleEase))
                 .OnComplete(() => { _scaling = null;});
         }
 
-        private void SetCount()
+        private void SetCount(int count)
         {
-            _text.text = $"{GlobalData.ShotsLeft.Val}";
+            _text.text = $"{count}";
         }
     }
 }

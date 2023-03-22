@@ -17,6 +17,6 @@ MonoBehaviour:
   ElementShakeMagnMax: 1.125
   ElementNeighbourShakeMagnMin: 0.1
   ElementNeighbourShakeMagnMax: 0.2
-  ElementShakeDur: 0.1
-  ElementDropPushForce: 4
+  ElementShakeDur: 0.05
+  ElementDropPushForce: 4.5
   ElementDownForceAdd: 1

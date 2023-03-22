@@ -1,5 +1,4 @@
-﻿using Helpers;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Weapons.Movement
 {
@@ -8,8 +7,6 @@ namespace Weapons.Movement
         public WeaponOneDMover mover;
         [Range(0f,1f)] public float offset = 0.1f;
         
-  
-
         public void SetLimits()
         {
             var cam = Camera.main;

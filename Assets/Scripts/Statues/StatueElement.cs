@@ -47,8 +47,8 @@ namespace Statues
                 return;
             _cracked = true;
             DamageHighlight();
-            // SetCrack();
-            // PlayDamagedAnim();
+            SetCrack();
+            PlayDamagedAnim();
             // foreach (var neighbourIndex in neighbourIndices)
             // {
             //    var ste =  (StatueElement)statue.Puzzle[neighbourIndex];
@@ -58,7 +58,6 @@ namespace Statues
 
         private void DamageHighlight()
         {
-            
         }
 
         private void SetCrack()
@@ -118,11 +117,14 @@ namespace Statues
             var dur = _config.ElementShakeDur;
             var sign = UnityEngine.Random.Range(-1f, 1f);
             sign = Mathf.Sign(sign);
+     
             var endPos = localStartPos;
             var magn = UnityEngine.Random.Range(_config.ElementShakeMagnMin, _config.ElementShakeMagnMax);
             endPos.z += magn * sign;
+            var backPos = localStartPos;
+            backPos.z += sign * UnityEngine.Random.Range(_config.ElementNeighbourShakeMagnMin, _config.ElementNeighbourShakeMagnMax);
             _moveSeq.Append(transform.DOLocalMove(endPos, dur))
-                .Append(transform.DOLocalMove(localStartPos, dur));
+                .Append(transform.DOLocalMove(backPos, dur));
         }
 
         public void PlayDamagedAsNeighbour()

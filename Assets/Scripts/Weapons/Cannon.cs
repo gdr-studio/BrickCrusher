@@ -1,11 +1,13 @@
 using UnityEngine;
+using Weapons.Movement;
+using Weapons.Shooting;
 
 namespace Weapons
 {
     public abstract class Cannon : MonoBehaviour
     {
         public abstract void Init();
-        public abstract void Kill();
-        public abstract void Activate();
+        public IWeaponMover Mover;
+        public ICannonShooter Shooter;
     }
 }

@@ -111,6 +111,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7735da1adae74aabbc4ff1afeead4af6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  colorSetter: {fileID: 6405850533330976817}
+  config: {fileID: 11400000, guid: 34347d4ddb1e50749b3224f996ac6b5c, type: 2}
 --- !u!114 &6448004484418845600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,7 +158,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 45dbfcddf0811e9478b38581ed895f2b, type: 2}
+  - {fileID: 2100000, guid: ea54f56000a822c418bd5c88f02d05cf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

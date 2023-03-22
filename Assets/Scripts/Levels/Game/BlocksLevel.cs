@@ -16,30 +16,34 @@ namespace Levels.Game
         [Header("components")] 
         [SerializeField] private Borders _borders;
         [SerializeField] private StatueName _statueName;
-        [SerializeField] private CannonName _cannonName;
         [SerializeField] private Transform _statueSpawn;
-        [SerializeField] private Transform _cannonSpawn;
-        
+        [SerializeField] private WeaponsSpawner _spawner;
 
         [Inject] private DiContainer _container;
         [Inject] private IParentService _parentService;
         [Inject] private IStatueRepository _staturRepo;
         [Inject] private IInputManager _inputManager;
+        [Inject] private ActionFilter _actions;
         [Inject] private CannonRepository _cannonRepo;
         
         public override void Init()
         {
+            GlobalData.CurrentLevel = this;
             _borders.Init();
             _parentService.DefaultParent = transform;
             SpawnStatue();
-            SpawnCannon();
             _inputManager.IsEnabled = true;
         }
 
         public override void StartLevel()
         {
+            _spawner.SpawnGuns(EnableInput);
+        }
+
+        private void EnableInput()
+        {
             _inputManager.IsEnabled = true;
-   
+            _actions.IsEnabled = true;   
         }
 
         private void SpawnStatue()
@@ -51,14 +55,6 @@ namespace Levels.Game
             instance.transform.localScale = _statueSpawn.localScale;
         }
 
-        private void SpawnCannon()
-        {
-            var prefab = _cannonRepo.GetPrefab(_cannonName);
-            var instance = _container.InstantiatePrefabForComponent<Cannon>(prefab, transform);
-            cannon = instance;
-            instance.transform.position = _cannonSpawn.position;
-            instance.transform.rotation = _cannonSpawn.rotation;
-            instance.Init();
-        }
+  
     }
 }

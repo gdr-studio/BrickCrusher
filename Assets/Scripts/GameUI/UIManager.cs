@@ -7,12 +7,14 @@ namespace GameUI
         [SerializeField] private UIPage _finish;
         [SerializeField] private UIPage _fail;
         [SerializeField] private UIPage _prog;
+        [SerializeField] private UIPage _money;
+        [SerializeField] private UIPage _mering;
 
         // is disabled
         public void Init()
         {
-            CloseAll();
-            _start.ShowPage(false);
+            CloseAllEditor();
+            _start.ShowPage(true);
         }
 
         public void CloseAll()
@@ -21,6 +23,16 @@ namespace GameUI
             _start.HidePage(true);
             _finish.HidePage(true);
             _prog.HidePage(true);
+        }
+        
+        public void CloseAllEditor()
+        {
+            _fail.HidePage(true);
+            _start.HidePage(true);
+            _finish.HidePage(true);
+            _prog.HidePage(true);
+            _money.HidePage(true);
+            _mering.HidePage(true);
         }
 
         public void ShowStart()
