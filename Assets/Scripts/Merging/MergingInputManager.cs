@@ -107,6 +107,7 @@ namespace Merging
                 if (cannon != null)
                 {
                     _collection.CallRemoveCannon(cannon);
+                    _purchaser.ReturnMoney(cannon.cannonName);
                 }
             }
         }

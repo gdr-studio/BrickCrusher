@@ -6,6 +6,7 @@ namespace Weapons
 {
     public abstract class Cannon : MonoBehaviour
     {
+        public abstract CannonName cannonName { get; }
         public abstract void Init();
         public IWeaponMover Mover;
         public IBallShooter BallShooter;

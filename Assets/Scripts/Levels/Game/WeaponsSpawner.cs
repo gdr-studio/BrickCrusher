@@ -16,7 +16,7 @@ namespace Levels.Game
         public PlayerWeaponCollection collection;
         public Transform spawnPoint;
         public CannonsController cannonsController;
-        [SerializeField] private List<Cannon> _spawnedCannons;
+        [SerializeField] private List<CannonSpawnable> _spawnedCannons;
         [Inject] private DiContainer _container;
 
         private void OnEnable()
@@ -26,6 +26,17 @@ namespace Levels.Game
             collection.RemoveCannon = PreStartRemove;
             collection.CheckSpawnAvailable = PreCanSpawn;
         }
+        
+        public void SpawnGuns(Action onEnd)
+        {
+            // cannonsController.cannons.AddRange(_spawnedCannons);
+            foreach (var spawnable in _spawnedCannons)
+            {
+                cannonsController.cannons.Add(spawnable.cannon);
+            }
+            onEnd?.Invoke();
+        }
+        
         
         // ReSharper disable Unity.PerformanceAnalysis
         private void PreStartSpawn(MergingData data)
@@ -41,15 +52,18 @@ namespace Levels.Game
         {
             for (int i = 0; i < _spawnedCannons.Count; i++)
             {
-                _spawnedCannons[i].transform.position = positions[i];
+                _spawnedCannons[i].Move(positions[i]);
+                // _spawnedCannons[i].transform.position = positions[i];
             }
         }
 
         private void PreStartRemove(Cannon cannon)
         {
             Dbg.Yellow($"Removing a cannon");
-            _spawnedCannons.Remove(cannon);
-            Destroy(cannon.gameObject);
+            var spawnable = _spawnedCannons.Find(t => t.cannon == cannon);
+            _spawnedCannons.Remove(spawnable);
+            // Destroy(cannon.gameObject);
+            spawnable.Delete();
             if (_spawnedCannons.Count == 0)
                 return;
             var positions = CalculatePositions(_spawnedCannons.Count);
@@ -62,8 +76,9 @@ namespace Levels.Game
             var positions = CalculatePositions(count);
             var lastCannon = _spawnedCannons[count];
             _spawnedCannons.Remove(lastCannon);
-            Destroy(lastCannon.gameObject);
+            lastCannon.Delete();
             RepositionSpawned(positions);
+            // Destroy(lastCannon.gameObject);
         }
 
         private bool PreCanSpawn()
@@ -71,11 +86,7 @@ namespace Levels.Game
             return _spawnedCannons.Count < maxCount;
         }
         
-        public void SpawnGuns(Action onEnd)
-        {
-            cannonsController.cannons.AddRange(_spawnedCannons);
-            onEnd?.Invoke();
-        }
+ 
 
         private void SpawnCannon(CannonName cannonName, Vector3 position)
         {
@@ -83,7 +94,9 @@ namespace Levels.Game
             var instance = _container.InstantiatePrefabForComponent<Cannon>(prefab, cannonsController.transform);
             instance.transform.position = position;
             instance.transform.rotation = spawnPoint.rotation;
-            _spawnedCannons.Add(instance);
+            _spawnedCannons.Add(instance.GetComponent<CannonSpawnable>());
+            var spawnable = instance.gameObject.GetComponent<CannonSpawnable>();
+            spawnable.Spawn();
             // cannonsController.cannons.Add(instance);
         }
         

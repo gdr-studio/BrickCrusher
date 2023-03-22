@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Weapons;
 
 namespace Merging
 {
@@ -8,6 +9,11 @@ namespace Merging
     {
         public List<MergingData> repository = new List<MergingData>();
 
+        public MergingData GetData(CannonName cannonName)
+        {
+            return repository.Find(t => t.cannonName == cannonName);
+        }
+        
         public MergingData GetNext(MergingData data)
         {
             var index = repository.IndexOf(data);

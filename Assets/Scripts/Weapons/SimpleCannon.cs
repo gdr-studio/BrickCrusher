@@ -1,12 +1,16 @@
-﻿using Weapons.Movement;
+﻿using UnityEngine;
+using Weapons.Movement;
 using Weapons.Shooting;
 
 namespace Weapons
 {
     public class SimpleCannon : Cannon
     {
+        [SerializeField] private CannonName _cannonName;
         public CannonSettings Settings;
-        
+
+        public override CannonName cannonName => _cannonName;
+
         public override void Init()
         {
             Mover = gameObject.GetComponent<IWeaponMover>();

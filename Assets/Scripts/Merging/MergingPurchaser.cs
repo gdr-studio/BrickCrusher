@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Data;
 using Helpers;
 using Money;
-using Unity.VisualScripting;
 using UnityEngine;
+using Weapons;
 
 namespace Merging
 {
@@ -78,7 +77,17 @@ namespace Merging
             area.SetData(data);
         }
 
-
+        public void ReturnMoney(CannonName cannonName)
+        {
+            var data = repository.GetData(cannonName);
+            var level = data.level;
+            var money = config.FirstLevelCannonCost * level;
+            Dbg.Green($"returning money. level: {level}, total {money}");
+            MoneyCounter.TotalMoney.Val += money;
+        }
+        
+        
+        
         public void GetParts()
         {
             areas = HierarchyHelpers.GetFromAllChildren<MergingItemArea>(mergableAreasParent, null);

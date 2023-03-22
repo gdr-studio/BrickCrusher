@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 652706283562438250}
   - component: {fileID: 3404466741049741903}
+  - component: {fileID: 4961248606622146105}
   - component: {fileID: 5729549165328889064}
   - component: {fileID: 4542638150510932920}
   - component: {fileID: 5569921559362619863}
@@ -52,7 +53,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Shooter: {fileID: 0}
+  _cannonName: {fileID: 0}
   Settings: {fileID: 0}
+--- !u!114 &4961248606622146105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 652706283562438249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20bd4136f42148bc90df62f9db398762, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cannon: {fileID: 3404466741049741903}
+  NormalScale: 0.4
+  ScaleEase: 18
+  MovingEase: 18
+  MoveTime: 0.25
+  ScaleTime: 0.25
 --- !u!114 &5729549165328889064
 MonoBehaviour:
   m_ObjectHideFlags: 0

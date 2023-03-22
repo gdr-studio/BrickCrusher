@@ -462,6 +462,10 @@ PrefabInstance:
       propertyPath: Settings
       value: 
       objectReference: {fileID: 11400000, guid: 1f39e01738c8fcd428363a869586a355, type: 2}
+    - target: {fileID: 3404466741049741903, guid: 76ad4886f0e4b3345adc5c481edbdb3a, type: 3}
+      propertyPath: _cannonName
+      value: 
+      objectReference: {fileID: 11400000, guid: 9c250eab210e52842bc9497670518619, type: 2}
     - target: {fileID: 4542638150510932920, guid: 76ad4886f0e4b3345adc5c481edbdb3a, type: 3}
       propertyPath: target
       value: 

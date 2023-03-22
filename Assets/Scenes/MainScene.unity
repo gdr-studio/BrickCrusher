@@ -1688,6 +1688,10 @@ PrefabInstance:
       propertyPath: _cannonsMask.m_Bits
       value: 512
       objectReference: {fileID: 0}
+    - target: {fileID: 6753729076199926978, guid: ecaeb920c8ecec0439420c8a0a22da0b, type: 3}
+      propertyPath: DebugCount
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 6753729076199926986, guid: ecaeb920c8ecec0439420c8a0a22da0b, type: 3}
       propertyPath: m_Name
       value: MergingPage
