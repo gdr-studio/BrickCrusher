@@ -3,7 +3,7 @@
     public interface IUIManager
     {
         void Init();
-        void CloseAll();
+        void Close();
         void ShowStart();
         void ShowProgress();
         void ShowWin();

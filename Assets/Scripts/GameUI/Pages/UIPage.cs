@@ -12,19 +12,21 @@ namespace GameUI
         
         public bool IsOpen
         {
-            get => _isOpen;
+            get => gameObject.activeInHierarchy;
             set
             {
                 _isOpen = value;
                 if (value)
                 {
-                    _canvas.enabled = true;
-                    _raycaster.enabled = true;
+                    // _canvas.enabled = true;
+                    // _raycaster.enabled = true;
+                    gameObject.SetActive(true);
                 }
                 else
                 {
-                    _canvas.enabled = false;
-                    _raycaster.enabled = false;   
+                    // _canvas.enabled = false;
+                    // _raycaster.enabled = false;   
+                    gameObject.SetActive(false);
                 }
             }
         }
@@ -32,6 +34,7 @@ namespace GameUI
         public virtual void ShowPage(bool fast)
         {
             IsOpen = true;
+            _canvas.sortingOrder = 1;
         }
 
         public virtual void HidePage(bool fast)

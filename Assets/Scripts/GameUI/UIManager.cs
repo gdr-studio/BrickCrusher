@@ -13,19 +13,12 @@ namespace GameUI
         // is disabled
         public void Init()
         {
-            CloseAllEditor();
+            Close();
             _start.ShowPage(true);
         }
 
-        public void CloseAll()
-        {
-            _fail.HidePage(true);
-            _start.HidePage(true);
-            _finish.HidePage(true);
-            _prog.HidePage(true);
-        }
-        
-        public void CloseAllEditor()
+        // ReSharper disable Unity.PerformanceAnalysis
+        public void Close()
         {
             _fail.HidePage(true);
             _start.HidePage(true);
@@ -37,25 +30,25 @@ namespace GameUI
 
         public void ShowStart()
         {
-            CloseAll();
+            Close();
             _start.ShowPage(false);
         }
 
         public void ShowProgress()
         {
-            CloseAll();
+            Close();
             _prog.ShowPage(false);
         }
 
         public void ShowWin()
         {
-            CloseAll();
+            Close();
             _finish.ShowPage(false);
         }
 
         public void ShowFail()
         {
-            CloseAll();
+            Close();
             _fail.ShowPage(false);
         }
 

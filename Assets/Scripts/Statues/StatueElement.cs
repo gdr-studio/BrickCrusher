@@ -80,27 +80,18 @@ namespace Statues
         public void Break()
         {
             _moveSeq?.Kill();
-            
-            
             piece.HideSelf();
             renderer.enabled = false;
             IsBroken = true;
             cracker.Hide();
-            if (isSubdivided)
-            {
-                subdivider.DropAll();
-            }
-            else
-            {
-                subdivider.SpawnAndDrop();
-            }
             statue.BrokenCount++;
+            if (isSubdivided)
+                subdivider.DropAll();
+            else
+                subdivider.SpawnAndDrop();
             subdivider.PushRandom();
         }
-
-        public void Push()
-        {
-        }
+        
         
         public void NeighboursOn(bool on )
         {

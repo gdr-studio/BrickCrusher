@@ -13,7 +13,7 @@ namespace GameUI
             var me = target as UIManager;
             if (GUILayout.Button("close all"))
             {
-                me.CloseAllEditor();
+                me.Close();
             }
         }
     }

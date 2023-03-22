@@ -4,12 +4,13 @@ using UnityEngine;
 
 namespace Merging
 {
-    public class ActivateRow : MonoBehaviour
+    public class MergeActiveRow : MonoBehaviour
     {
         public List<MergingItemArea> areas = new List<MergingItemArea>();
         public ReactiveProperty<bool> hasChosen = new ReactiveProperty<bool>();
         public PlayerWeaponCollection playerCollection;
 
+        public bool IsEmpty => MergingHelpers.CheckFullEmpty(areas);
         private void OnEnable()
         {
             foreach (var area in areas)

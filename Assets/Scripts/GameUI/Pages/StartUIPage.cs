@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Data.Game;
-using Helpers;
 using Merging;
 using UnityEngine;
 using VFX.Animations.Impl;
@@ -19,6 +18,8 @@ namespace GameUI
         
         public override void ShowPage(bool fast)
         {
+            if (IsOpen)
+                return;
             base.ShowPage(fast);
             _button.interactable = true;
             _button.OnDown += OnClick;
@@ -28,12 +29,14 @@ namespace GameUI
             }
             _mergingUI.ShowPage(false);
             _moneyUIPage.ShowPage(false);
-            OnWeaponChosen(_mergingUI.ActivateRow.hasChosen.Val);
-            _mergingUI.ActivateRow.hasChosen.SubOnChange(OnWeaponChosen);
+            OnWeaponChosen(_mergingUI.MergeActiveRow.hasChosen.Val);
+            _mergingUI.MergeActiveRow.hasChosen.SubOnChange(OnWeaponChosen);
         }
 
         public override void HidePage(bool fast)
         {
+            if (IsOpen == false)
+                return;
             base.HidePage(fast);
             _button.OnDown -= OnClick;
             _button.interactable = false;

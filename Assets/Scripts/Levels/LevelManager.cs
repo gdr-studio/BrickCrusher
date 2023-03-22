@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Data.Game;
 using UnityEditor;
 using UnityEngine;
 using Levels;
@@ -77,6 +78,12 @@ namespace Levels
 #if !UNITY_EDITOR
         editorMode = false;
 #endif
+            if (editorMode == false)
+            {
+                // setting values set by data saver to static data
+                CurrentIndex = GlobalData.LevelIndex;
+                TotalLevels = GlobalData.LevelTotal;
+            }
         }
 
         public void LoadLast()

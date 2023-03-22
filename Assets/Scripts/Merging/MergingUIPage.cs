@@ -8,13 +8,15 @@ namespace Merging
     {
         [SerializeField] private MergingPurchaser _purchaser;
         [SerializeField] private MergingInputManager _inputManager;
-        [SerializeField] private ActivateRow _activeRow;
+        [SerializeField] private MergeActiveRow _activeRow;
         [SerializeField] private MergingInitiator _mergingInitiator;
 
-        public ActivateRow ActivateRow => _activeRow;
+        public MergeActiveRow MergeActiveRow => _activeRow;
         
         public override void ShowPage(bool fast)
         {
+            if (_isOpen)
+                return;
             base.ShowPage(fast);
             _mergingInitiator.Init();
             _purchaser.Init();

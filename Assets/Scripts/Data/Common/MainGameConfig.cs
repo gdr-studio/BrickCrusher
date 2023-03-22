@@ -5,6 +5,8 @@ namespace Data
     [CreateAssetMenu(fileName = nameof(MainGameConfig), menuName = "SO/" + nameof(MainGameConfig))]
     public class MainGameConfig : ScriptableObject
     {
+        [Header("DataSaving")] 
+        public float DataSavePeriod;
         [Header("Merging")] 
         public float BlockDamageColorTime = 0.4f;
         public float BlockDamageEndGray = 0.7f;

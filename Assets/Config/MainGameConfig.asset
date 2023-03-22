@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76258ae01cf34efcb6dba63a4525f386, type: 3}
   m_Name: MainGameConfig
   m_EditorClassIdentifier: 
+  DataSavePeriod: 10
+  BlockDamageColorTime: 0.4
+  BlockDamageEndGray: 0.7
+  FirstLevelCannonCost: 10
   CannonMoveSpeed: 38
   ElementShakeMagnMin: 0.75
   ElementShakeMagnMax: 1.125

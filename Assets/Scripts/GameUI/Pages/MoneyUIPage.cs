@@ -8,7 +8,7 @@ namespace GameUI
         [SerializeField] private MoneyBlock _moneyBlock;
         public override void ShowPage(bool fast)
         {
-            if (_isOpen)
+            if (IsOpen)
                 return;
             IsOpen = true;
             _moneyBlock.SetCount();
@@ -17,11 +17,13 @@ namespace GameUI
         
         public override void HidePage(bool fast)
         {
-            _canvas.enabled = false;
+            if (IsOpen == false)
+                return;
+            IsOpen = false;
             MoneyCounter.TotalMoney.UnsubOnChange(OnMoneyChange);
         }
         
-        private void OnMoneyChange(float obj)
+        private void OnMoneyChange(int obj)
         {
             _moneyBlock.UpdateCount();
         }

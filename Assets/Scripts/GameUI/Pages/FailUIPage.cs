@@ -15,6 +15,8 @@ namespace GameUI
         
         public override void ShowPage(bool fast)
         {
+            if (IsOpen)
+                return;
             base.ShowPage(fast);
             _button.onClick.AddListener(OnClick);
             _button.interactable = true;
@@ -27,6 +29,8 @@ namespace GameUI
 
         public override void HidePage(bool fast)
         {
+            if (IsOpen == false)
+                return;
             base.HidePage(fast);
             _button.onClick.RemoveListener(OnClick);
             _button.interactable = false;

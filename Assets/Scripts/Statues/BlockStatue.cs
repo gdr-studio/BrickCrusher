@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Helpers;
 using ImageToVolume;
 using UnityEngine;
 
@@ -6,11 +8,26 @@ namespace Statues
 {
     public class BlockStatue : MonoBehaviour
     {
+        public event Action OnAllBroken;
         public bool InitOnAwake = true;
         public List<VolumeElement> Puzzle = new List<VolumeElement>();
 
-        public int TotalCount => Puzzle.Count;
-        public int BrokenCount { get; set; }
+        private int _brokenCount;
+
+        public int BrokenCount
+        {
+            get => _brokenCount;
+            set
+            {
+                _brokenCount = value;
+                if (_brokenCount >= Puzzle.Count)
+                {
+                    OnAllBroken?.Invoke();
+                }
+            }
+        }
+        
+        
         
         private void OnValidate()
         {

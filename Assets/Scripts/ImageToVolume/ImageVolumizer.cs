@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Helpers;
 using LittleTricks;
 using Statues;
 using UnityEngine;
@@ -88,7 +87,6 @@ namespace ImageToVolume
                     var alphaCheck = CheckAlpha(uvOffset, blockSize, (int)imageSize, pixels);
                     if (alphaCheck == -1)
                     {
-                        // Debug.Log($"All alpha 0, remove this one");
                         yPos += ySize; 
                         continue;
                     }
@@ -149,7 +147,6 @@ namespace ImageToVolume
          }
 
 
-         
          private void Subdivide(VolumeElement element, Color[] pixels,  Vector2 elementOffset, int imageSizeX)
          {
              var subParts = new List<ElementSub>();
@@ -190,60 +187,17 @@ namespace ImageToVolume
                  }
            
              }
+
+             if (subParts.Count == 0)
+             {
+                 statue.Puzzle.Remove(element);
+                 spawnedBlocks.Remove(element.gameObject);
+                 DestroyImmediate(element.gameObject);
+                 return;
+             }
              element.SetSubdivided(subParts, subDivideFactor);
          }
-
          
-         // private void Subdivide(VolumeElement element, Color[] pixels,  Vector2 elementOffset, int imageSizeX)
-         // {
-         //     var subParts = new List<ElementSub>();
-         //
-         //     var factor = subDivideFactor;
-         //     element.transform.localEulerAngles = Vector3.zero;
-         //     var startX = (int)(imageSizeX * elementOffset.x);
-         //     var startY= (int)(imageSizeX * elementOffset.y);
-         //     var step = (float)blockSize / (float)factor;
-         //     var subPhysicalSize = 1f / factor;
-         //     var posXInd = 0;
-         //     var posYInd = 0;
-         //     
-         //     var centerQ = (float)(factor / 2);
-         //     if (factor % 2f == 0)
-         //         centerQ -= 0.5f;
-         //     
-         //     var centerVec = new Vector3(centerQ, centerQ, 0);
-         //     var tileSize = blockSize / factor;
-         //     var tilesCount = imageSizeX / tileSize;
-         //     var tiling = new Vector2(1f / tilesCount, 1f / tilesCount);
-         //     for (var x = 0f; x < blockSize; x += step)
-         //     {
-         //         for (var y = 0f; y < blockSize; y += step)
-         //         {
-         //             var xPixel = x + startX;
-         //             var yPixel = y + startY;
-         //             // var indexPixel = xPixel + yPixel * imageSizeX;
-         //             var offset = new Vector2(xPixel, yPixel) / imageSizeX;
-         //             if (CheckAlpha(offset, tileSize, imageSizeX, pixels) == -1)
-         //             {
-         //                 posYInd++;
-         //                 continue;
-         //             }
-         //             
-         //             var localpos = (new Vector3(posXInd, posYInd,0) - centerVec ) * subPhysicalSize;
-         //             var instance = SpawnSub(element.transform, localpos);
-         //             instance.SetSize(subPhysicalSize);
-         //             
-         //             instance.colorSetter.SetMaterial(mat, tiling, offset);
-         //
-         //             posYInd++;
-         //             subParts.Add(instance);
-         //         }  
-         //         posXInd++;
-         //         posYInd = 0;
-         //     }
-         //     element.SetSubdivided(subParts, subDivideFactor);
-         // }
-
          private List<SubDivData> SubDivideArea(Color[] pixels, int imageSizeX, int areaSize, int startXPixel, int startYPixel, int factor, float physicalSize)
          {
              List<SubDivData> datalist = new List<SubDivData>();
