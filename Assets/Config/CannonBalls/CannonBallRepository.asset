@@ -15,3 +15,7 @@ MonoBehaviour:
   data:
   - name: {fileID: 11400000, guid: e36f00deeaac4064b9433840b780a057, type: 2}
     prefab: {fileID: -2496155211805060959, guid: 1737a2a243e50a74bacad66a2cdab38c, type: 3}
+  - name: {fileID: 11400000, guid: 1c0ee4120964e2f48babc1509fa32ba9, type: 2}
+    prefab: {fileID: -2496155211805060959, guid: 9817ed244ae43b440b10777885f6a105, type: 3}
+  - name: {fileID: 11400000, guid: c6229942dade2664f8cfff67a95e9562, type: 2}
+    prefab: {fileID: -2496155211805060959, guid: 19b3f80767d545940800a519db7349ba, type: 3}

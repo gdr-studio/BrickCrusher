@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿// #define SET_WEAPONS_SAME
+using System.Collections.Generic;
 using Data.Game;
 using UnityEngine;
 using Weapons.Movement;
 using Weapons.Shooting;
+
 
 namespace Weapons
 {
@@ -19,33 +21,51 @@ namespace Weapons
             GlobalData.CurrentWeapon = this;
             limitSetter.SetLimits();
             mover.Settings = settings.moving;
-            
-            List<ICannonShooter> cannonShooters = new List<ICannonShooter>();
+            #if SET_WEAPONS_SAME
+            var cannonShooters = new List<IBallShooter>();
             foreach (var cannon in cannons)
             {
                 cannon.Init();   
-                cannonShooters.Add(cannon.Shooter);
-                cannon.Shooter.Settings = settings.shooting;
+                cannonShooters.Add(cannon.BallShooter);
+                cannon.BallShooter.Settings = settings.shooting;
             }
             shooter.Shooters = cannonShooters;
             shooter.Settings = settings.shooting;
+            #else
+            foreach (var cannon in cannons)
+            {
+                cannon.Init();  
+            }
+            #endif
         }
-
-   
+        
         public void Kill()
         {
             shooter.StopShooting();
         }
         
-        
         public void Grab()
         {
-            shooter.StartShooting();   
+#if SET_WEAPONS_SAME
+            shooter.StartShooting();
+#else
+            foreach (var c in cannons)
+            {
+                c.Shooter.StartShooting();
+            }
+#endif
         }
 
         public void Release()
         {
+#if SET_WEAPONS_SAME
             shooter.StopShooting();
+#else
+            foreach (var c in cannons)
+            {
+                c.Shooter.StopShooting();
+            }
+            #endif
         }
 
         public void Move(Vector2 dir)

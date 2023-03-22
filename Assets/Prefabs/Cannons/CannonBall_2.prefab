@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6194113440970957978}
   - component: {fileID: 4982062429545213895}
   m_Layer: 0
-  m_Name: CannonBall_black
+  m_Name: CannonBall_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,7 +51,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveEase: 32
   layers: {fileID: 11400000, guid: 43da7180f2b189140b30eecc5798851a, type: 2}
-  settings: {fileID: 11400000, guid: 206f0a673037ffd42a18902424f8dd66, type: 2}
 --- !u!33 &6194113440970957980
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -80,7 +79,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e49f2280a7725fb4997ded36012822a4, type: 2}
+  - {fileID: 2100000, guid: 39c5e7e1ac2bdbf489c753ba12b1028a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1391,8 +1390,8 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.07450981, g: 0.02745098, b: 0.12941177, a: 1}
-        key1: {r: 0, g: 0, b: 0, a: 1}
+        key0: {r: 0.12941177, g: 0.027450979, b: 0.031248633, a: 1}
+        key1: {r: 0.3679245, g: 0, b: 0, a: 1}
         key2: {r: 0, g: 0, b: 0, a: 1}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -6137,8 +6136,8 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.3647059, g: 0, b: 1, a: 1}
-        key1: {r: 0.3647059, g: 0, b: 1, a: 0}
+        key0: {r: 1, g: 0, b: 0.2734213, a: 1}
+        key1: {r: 1, g: 0, b: 0.28782463, a: 0}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -10922,8 +10921,8 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.07450981, g: 0.02745098, b: 0.12941177, a: 1}
-        key1: {r: 0.14117648, g: 0.05882353, b: 0.23529412, a: 1}
+        key0: {r: 0.12941177, g: 0.027450979, b: 0.032879647, a: 1}
+        key1: {r: 0.23529412, g: 0.05882353, b: 0.06356913, a: 1}
         key2: {r: 0.14117648, g: 0.05882353, b: 0.23529412, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -10931,7 +10930,7 @@ ParticleSystem:
         key6: {r: 0, g: 0, b: 0, a: 0}
         key7: {r: 0, g: 0, b: 0, a: 0}
         ctime0: 0
-        ctime1: 20746
+        ctime1: 21588
         ctime2: 23655
         ctime3: 0
         ctime4: 0
@@ -14586,7 +14585,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0, g: 0, b: 0, a: 0.64705884}
+      maxColor: {r: 0.18867922, g: 0, b: 0, a: 0.64705884}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}

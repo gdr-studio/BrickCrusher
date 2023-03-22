@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5729549165328889064}
   - component: {fileID: 4542638150510932920}
   - component: {fileID: 5569921559362619863}
+  - component: {fileID: 2830629572167252086}
   m_Layer: 0
   m_Name: Cannon_base
   m_TagString: Untagged
@@ -49,6 +50,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7f9017573bc4152a36f9cfe9c1c3858, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Shooter: {fileID: 0}
+  Settings: {fileID: 0}
 --- !u!114 &5729549165328889064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92,6 +95,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _wheels: []
   _wheelsTurnSpeed: 500
+--- !u!114 &2830629572167252086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 652706283562438249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b2e23a0819342d0bae1f93b694eb4cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shotsCounter: {fileID: 7631299750362109501}
+  ballShooter: {fileID: 5729549165328889064}
 --- !u!1 &1030903819107555174
 GameObject:
   m_ObjectHideFlags: 0
@@ -148,8 +165,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8136669500701052148}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.4666114, z: -5.2749996}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
+  m_LocalPosition: {x: 0, y: 0, z: -3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4893893775754292699}
@@ -210,7 +227,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 3, y: 3}
+  m_SizeDelta: {x: 4, y: 3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &427279739329122001
 MeshRenderer:
@@ -301,7 +318,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 10
+  m_fontSize: 14
   m_fontSizeBase: 10
   m_fontWeight: 400
   m_enableAutoSizing: 0

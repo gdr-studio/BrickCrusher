@@ -1,52 +1,76 @@
-﻿using Services.Parent;
+﻿using System.Collections;
+using Data.Game;
+using React;
 using UnityEngine;
-using Zenject;
 
 namespace Weapons.Shooting
 {
-    public class CannonShooter : MonoBehaviour, ICannonShooter
+    public class CannonShooter : MonoBehaviour
     {
-        [SerializeField] private CannonShootAnimation _shootAnim;
-        [SerializeField] private Transform _fromPoint;
-        [SerializeField] private ParticleSystem _particle;
+ 
+        public ShotsLeftCounter shotsCounter;
+        public BallShooter ballShooter;
+        private ReactiveProperty<int> _leftShots;
+        private Coroutine _shooting;
+        private float _elapsedShootTime;
+        private bool _didShoot;
 
-
-        [Inject] private DiContainer _container;
-        [Inject] private IParentService _parentService;
-        [Inject] private CannonBallRepository _ballRepository;
-        private CannonBall _prefab;
-
+        public int MaxShoots { get; private set; }
+        public float FirePeriod { get; private set; }
+        
         private ShootingSettings _settings;
-
         public ShootingSettings Settings
         {
             get => _settings;
             set
             {
                 _settings = value;
-                _prefab = _ballRepository.GetPrefab(_settings.cannonBall);
+                _leftShots = new ReactiveProperty<int>();
+                _leftShots.Val = _settings.MaxShots;
+                MaxShoots = _settings.MaxShots;
+                GlobalData.ShotsLeft.Val = MaxShoots;
+                shotsCounter.Init(_leftShots);
+                FirePeriod = _settings.ShootDelay;
             }
         }
         
-        public void ShootForward()
+        
+        public void StartShooting()
         {
-            // SpawnBallAndShoot();
-            _shootAnim.PlayShoot(SpawnBallAndShoot);
+            if(_shooting != null)
+                StopCoroutine(_shooting);
+            _shooting = StartCoroutine(Shooting());
         }
 
-        private void SpawnBallAndShoot()
+        public void StopShooting()
         {
-            var ballInstance = _container.InstantiatePrefabForComponent<CannonBall>(_prefab, _parentService.DefaultParent);
-            ballInstance.transform.position = _fromPoint.transform.position;
-            ballInstance.transform.rotation = _fromPoint.transform.rotation;
-            ballInstance.Shoot(_fromPoint.up, _settings);
-            _particle.Play();   
+            if(_shooting != null)
+                StopCoroutine(_shooting);
+        }
+
+        // ReSharper disable Unity.PerformanceAnalysis
+        private IEnumerator Shooting()
+        {
+            while (_leftShots.Val > 0)
+            {
+                while (_elapsedShootTime < FirePeriod && _didShoot)
+                {
+                    _elapsedShootTime += Time.deltaTime;
+                    yield return null;
+                }
+                yield return null;
+                MinusShot();
+                _elapsedShootTime = 0f;
+                _didShoot = true;
+                ballShooter.ShootForward();
+            }
         }
         
-        public void OrientFor(Transform target)
+        private void MinusShot()
         {
-            _fromPoint.rotation = target.rotation;
+            _leftShots.Val--;
         }
         
+            
     }
 }

@@ -8,6 +8,7 @@ namespace Weapons
     {
         public abstract void Init();
         public IWeaponMover Mover;
-        public ICannonShooter Shooter;
+        public IBallShooter BallShooter;
+        public CannonShooter Shooter;
     }
 }

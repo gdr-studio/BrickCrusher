@@ -10,5 +10,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ec4fb37a009343ae970ba1d2cd9afc45, type: 3}
-  m_Name: CannonBall_Black
+  m_Name: CannonBall_2
   m_EditorClassIdentifier: 

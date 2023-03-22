@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Data.Game;
 using React;
@@ -9,15 +8,18 @@ namespace Weapons.Shooting
 {
     public class CannonsShooter : MonoBehaviour
     {
-        public List<ICannonShooter> Shooters { get; set; }
-        public int MaxShoots;
-        public float FirePeriod;
         public ShotsLeftCounter shotsCounter;
         
         private ReactiveProperty<int> _leftShots;
         private Coroutine _shooting;
         private float _elapsedShootTime;
         private bool _didShoot;
+        
+        public List<IBallShooter> Shooters { get; set; }
+
+        
+        public int MaxShoots { get; private set; }
+        public float FirePeriod { get; private set; }
 
         private ShootingSettings _settings;
         public ShootingSettings Settings

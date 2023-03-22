@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4033410118962037479
 Transform:
   m_ObjectHideFlags: 0
@@ -303,7 +303,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mover: {fileID: 8769960320486356187}
-  offset: 0.1
+  offset: 0
 --- !u!114 &1013709608279750098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,8 +316,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f4ba0eafb7e47c1b8591d604a59accc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxShoots: 10
-  FirePeriod: 1
   shotsCounter: {fileID: 8231100993305436455}
 --- !u!1 &6400681345526485871
 GameObject:
