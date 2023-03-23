@@ -12,12 +12,14 @@ namespace Weapons
         public Ease MovingEase;
         public float MoveTime = 0.5f;
         public float ScaleTime = 0.5f;
+        public ParticleSystem spawnParticles;
 
         public MergingItemArea MergingArea { get; set; }
         public void Spawn()
         {
             transform.localScale = Vector3.zero;
             transform.DOScale(Vector3.one * NormalScale, ScaleTime).SetEase(ScaleEase);
+            spawnParticles.Play();
         }
 
         public void Delete()

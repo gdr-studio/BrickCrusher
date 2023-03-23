@@ -37,7 +37,7 @@ namespace Levels.Game
 
         public override void StartLevel()
         {
-            _spawner.SpawnGuns(EnableInput);
+            _spawner.InitSpawnedGuns(EnableInput);
         }
         
         

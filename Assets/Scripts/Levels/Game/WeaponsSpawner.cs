@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Helpers;
+using DG.Tweening;
 using Merging;
 using UnityEngine;
 using Weapons;
@@ -12,10 +12,12 @@ namespace Levels.Game
     {
         public float spacing = 1f;
         public int maxCount = 3;
+        public float moveToActivePointTime = 0.25f;
         public CannonRepository cannonsRepository;
         public PlayerWeaponCollection collection;
         public Transform spawnPoint;
         public CannonsController cannonsController;
+        public Transform mergingPosition;
         [SerializeField] private List<CannonSpawnable> _spawnedCannons;
         [Inject] private DiContainer _container;
 
@@ -25,11 +27,12 @@ namespace Levels.Game
             collection.RemoveLast = PreStartRemoveLast;
             collection.RemoveCannon = PreStartRemove;
             collection.CheckSpawnAvailable = PreCanSpawn;
+            cannonsController.transform.localPosition = mergingPosition.localPosition;
         }
         
-        public void SpawnGuns(Action onEnd)
+        public void InitSpawnedGuns(Action onEnd)
         {
-            // cannonsController.cannons.AddRange(_spawnedCannons);
+            cannonsController.transform.DOLocalMove(Vector3.zero, moveToActivePointTime);
             foreach (var spawnable in _spawnedCannons)
             {
                 cannonsController.cannons.Add(spawnable.cannon);

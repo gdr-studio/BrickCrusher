@@ -107,6 +107,7 @@ namespace Merging
                 {
                     _collection.CallRemoveCannon(cannon);
                     cannon.MergingArea.SetDataBack();
+                    cannon.MergingArea.PlayReturnEffect();
                     // _purchaser.ReturnMoney(cannon.cannonName);
                 }
             }

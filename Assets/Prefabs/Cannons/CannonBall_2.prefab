@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3accecd317404ffcb05a950014ad5186, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveEase: 32
+  moveEase: 1
   layers: {fileID: 11400000, guid: 43da7180f2b189140b30eecc5798851a, type: 2}
 --- !u!33 &6194113440970957980
 MeshFilter:

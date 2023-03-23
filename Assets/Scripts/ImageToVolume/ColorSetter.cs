@@ -10,7 +10,7 @@ namespace ImageToVolume
         public string colorKey;
         public Vector2 offset;
         public Vector2 tiling;
-        private static readonly int TilingOffsetVector = Shader.PropertyToID("_MainTex_ST");
+        private static readonly int TilingOffsetVector = Shader.PropertyToID("_BaseMap_ST");
         private Coroutine _colorChanging;
         
         public void SetColor(Color endColor)
@@ -38,10 +38,16 @@ namespace ImageToVolume
 
         public void UpdateTilingAndOffset()
         {
+            // var mat = renderer.material;
+            // mat.mainTextureOffset = offset;
+            // mat.mainTextureScale = tiling;
+            // renderer.material = mat;
+  
             var block = new MaterialPropertyBlock();
             renderer.GetPropertyBlock(block);
             block.SetVector(TilingOffsetVector, new Vector4(tiling.x, tiling.y, offset.x, offset.y));
             renderer.SetPropertyBlock(block);
+            
         }
 
 

@@ -27,6 +27,7 @@ namespace Merging
                 return false;
             }
             area.SetData(nextData);
+            area.PlayMergeEffect();
             return true;
         }
     }

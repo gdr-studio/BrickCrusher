@@ -135,7 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.743147, g: 0.8815599, b: 0.9433962, a: 1}
+  m_Color: {r: 0.67058825, g: 0.67058825, b: 0.67058825, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -422,7 +422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.06598964, g: 0.026432898, b: 0.20754719, a: 1}
+  m_Color: {r: 0.029462004, g: 0, b: 0.122641504, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -516,12 +516,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa68d8597fc543689ada211587bf7a2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  image: {fileID: 1738752320}
+  mainImage:
+    image: {fileID: 1738752320}
+    activeColor: {r: 1, g: 1, b: 1, a: 1}
+    passiveColor: {r: 0.6698113, g: 0.6698113, b: 0.6698113, a: 1}
+  backGround:
+    image: {fileID: 2082298139}
+    activeColor: {r: 1, g: 1, b: 1, a: 1}
+    passiveColor: {r: 0.67058825, g: 0.67058825, b: 0.67058825, a: 1}
   currentData: {fileID: 0}
   levelText: {fileID: 6840040401351970414}
   costBlock: {fileID: 5218364975030273676}
-  spawnedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  _punchScale: 0.2
+  _punchScaleBuy: 0.1
+  _punchScaleReturn: 0.15
+  _punchScaleMerge: 0.25
   _punchDur: 0.2
 --- !u!222 &3786658697759673941
 CanvasRenderer:

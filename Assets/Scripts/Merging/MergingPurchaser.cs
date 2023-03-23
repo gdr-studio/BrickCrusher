@@ -72,6 +72,7 @@ namespace Merging
             MoneyCounter.TotalMoney.Val -= cost;
             var data = repository.GetFirstLevel();
             area.SetData(data);
+            area.PlayBuyEffect();
         }
 
         public void ReturnMoney(CannonName cannonName)

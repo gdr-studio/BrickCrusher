@@ -8,14 +8,48 @@ namespace Merging
 {
     public class MergingItemArea : MonoBehaviour
     {
-        public Image image;
+        public ImageData mainImage;
+        public ImageData backGround;
         public MergingData currentData;
         public TextMeshProUGUI levelText;
         public CostBlock costBlock;
-        public Color spawnedColor;
         [Space(20)] 
-        [SerializeField] private float _punchScale = 1.2f;
+        [SerializeField] private float _punchScaleBuy = 0.2f;
+        [SerializeField] private float _punchScaleReturn = 0.2f;
+        [SerializeField] private float _punchScaleMerge = 0.2f;
         [SerializeField] private float _punchDur = 0.2f;
+
+        [System.Serializable]
+        public class ImageData
+        {
+            public Image image;
+            public Color activeColor;
+            public Color passiveColor;
+
+            public void SetActive()
+            {
+                image.color = activeColor;
+            }
+
+            public void SetPassive()
+            {
+                image.color = passiveColor;
+            }
+
+            public void SetImageActive(Sprite sprite)
+            {
+                image.enabled = true;
+                image.sprite = sprite;
+                image.color = activeColor;
+            }
+
+            public void HideAndClear()
+            {
+                image.sprite = null;
+                image.enabled = false;
+                image.color = activeColor;
+            }
+        }
         
         public bool IsTaken { get; set; }
         public bool IsEmpty() => currentData == null;
@@ -59,17 +93,17 @@ namespace Merging
         private void UpdateByData()
         {
             SetAvailable();
-            image.enabled = true;
-            image.sprite = currentData.sprite;
+            backGround.SetActive();
+            mainImage.SetImageActive(currentData.sprite);
             levelText.enabled = true;
             levelText.text = $"{currentData.level}";   
         }
 
         public void SetEmpty()
         {
+            backGround.SetPassive();
             SetAvailable();
-            image.sprite = null;
-            image.enabled = false;
+            mainImage.HideAndClear();
             currentData = null;
             levelText.enabled = false;
             IsTaken = false;
@@ -87,27 +121,41 @@ namespace Merging
 
         public void SetSpawned()
         {
-            image.color = spawnedColor;
+            mainImage.SetPassive();
             IsTaken = true;
         }
 
         public void SetTaken()
         {
-            image.color = spawnedColor;
+            backGround.SetPassive();
+            mainImage.SetPassive();
             IsTaken = true;
         }
 
         private void SetAvailable()
         {
-            image.color = Color.white;
+            mainImage.SetActive();
         }
         
         public void SetDataBack()
         {
             UpdateByData();
             IsTaken = false;
-            transform.DOPunchScale(_punchScale * Vector3.one, _punchDur);
         }
- 
+
+        public void PlayMergeEffect()
+        {
+            transform.DOPunchScale(_punchScaleReturn * Vector3.one, _punchScaleMerge);
+        }
+
+        public void PlayReturnEffect()
+        {
+            transform.DOPunchScale(_punchScaleReturn * Vector3.one, _punchScaleReturn);
+        }
+
+        public void PlayBuyEffect()
+        {
+            transform.DOPunchScale(_punchScaleReturn * Vector3.one, _punchScaleBuy);
+        }
     }
 }

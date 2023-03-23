@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 536d5751472c4cb0a716c216f659ff86, type: 3}
   m_Name: MergingData_7
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: be0c498fcd8daf74f884869b4babb3eb, type: 3}
-  cannonName: {fileID: 11400000, guid: 7bb8df7ade417f341b72d442dd319b2d, type: 2}
+  sprite: {fileID: 21300000, guid: adf1b40c52b72db439e3b5090877e0e5, type: 3}
+  cannonName: {fileID: 11400000, guid: 2add3de80fa5eca418df0b14a81b3382, type: 2}
   level: 64

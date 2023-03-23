@@ -3,7 +3,12 @@ guid: 59e97fa06e12a474eb85a3bd921980af
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Gun03_DefaultMaterial_BaseColor
+    second: {fileID: 2800000, guid: 976ae9d85b6150444802164d85749d69, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
