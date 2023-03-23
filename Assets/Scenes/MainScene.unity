@@ -812,6 +812,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1153969535}
     m_Modifications:
+    - target: {fileID: 353955345227199888, guid: 4dac07afdf0012b4bb85feb0ee01357e, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 353955345227199980, guid: 4dac07afdf0012b4bb85feb0ee01357e, type: 3}
       propertyPath: m_Name
       value: WinPage

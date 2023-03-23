@@ -42,6 +42,10 @@ namespace Weapons
         public void Kill()
         {
             shooter.StopShooting();
+            foreach (var cannon in cannons)
+            {
+                cannon.Shooter.StopShooting();
+            }
         }
         
         public void Grab()
