@@ -362,7 +362,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb49b2795e7d439fa64970918bbe3422, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spacing: 2.55
+  spacing: 2
+  maxCount: 3
   cannonsRepository: {fileID: 11400000, guid: db4386e5e1fca094b8481e5ebdb3c4eb, type: 2}
   collection: {fileID: 11400000, guid: c3c3e9abd3cf25047806e38d4a065050, type: 2}
   spawnPoint: {fileID: 4091830281777952549}
