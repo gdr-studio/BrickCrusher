@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace Merging
 {
-    public partial class MergingInputManager
+    public partial class MergingManager
     {
         private class MovingData
         {

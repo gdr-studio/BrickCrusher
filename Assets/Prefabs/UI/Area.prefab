@@ -531,6 +531,8 @@ MonoBehaviour:
   _punchScaleReturn: 0.15
   _punchScaleMerge: 0.25
   _punchDur: 0.2
+  _highlightScale: 1.075
+  _highlightDur: 0.25
 --- !u!222 &3786658697759673941
 CanvasRenderer:
   m_ObjectHideFlags: 0

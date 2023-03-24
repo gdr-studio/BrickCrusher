@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 652706283562438250}
   - component: {fileID: 3404466741049741903}
-  - component: {fileID: 4961248606622146105}
-  - component: {fileID: 5729549165328889064}
   - component: {fileID: 4542638150510932920}
+  - component: {fileID: 5729549165328889064}
   - component: {fileID: 5569921559362619863}
+  - component: {fileID: 4961248606622146105}
   - component: {fileID: 2830629572167252086}
   - component: {fileID: 192325057067554380}
   m_Layer: 9
@@ -53,10 +53,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7f9017573bc4152a36f9cfe9c1c3858, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Shooter: {fileID: 0}
-  _cannonName: {fileID: 0}
   Settings: {fileID: 0}
---- !u!114 &4961248606622146105
+  _cannonName: {fileID: 0}
+--- !u!114 &4542638150510932920
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -65,16 +64,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 652706283562438249}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20bd4136f42148bc90df62f9db398762, type: 3}
+  m_Script: {fileID: 11500000, guid: f52a1dfd1c4f4f94a8b450750f0d8906, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cannon: {fileID: 3404466741049741903}
-  NormalScale: 0.4
-  ScaleEase: 18
-  MovingEase: 18
-  MoveTime: 0.25
-  ScaleTime: 0.25
-  spawnParticles: {fileID: 2199503982919373849}
+  target: {fileID: 0}
+  settings: {fileID: 11400000, guid: 11285ef9dc92d7d45bd8b9b13e882a28, type: 2}
 --- !u!114 &5729549165328889064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90,20 +84,6 @@ MonoBehaviour:
   _shootAnim: {fileID: 4542638150510932920}
   _fromPoint: {fileID: 3272817478390383582}
   _particle: {fileID: 0}
---- !u!114 &4542638150510932920
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 652706283562438249}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f52a1dfd1c4f4f94a8b450750f0d8906, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  settings: {fileID: 11400000, guid: 11285ef9dc92d7d45bd8b9b13e882a28, type: 2}
 --- !u!114 &5569921559362619863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,6 +98,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _wheels: []
   _wheelsTurnSpeed: 500
+--- !u!114 &4961248606622146105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 652706283562438249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20bd4136f42148bc90df62f9db398762, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cannon: {fileID: 3404466741049741903}
+  shotsCounter: {fileID: 7631299750362109501}
+  NormalScale: 0.4
+  ScaleEase: 18
+  MovingEase: 18
+  MoveTime: 0.25
+  ScaleTime: 0.25
+  spawnParticles: {fileID: 2199503982919373849}
 --- !u!114 &2830629572167252086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotsCounter: {fileID: 7631299750362109501}
-  ballShooter: {fileID: 5729549165328889064}
+  ballLauncher: {fileID: 5729549165328889064}
 --- !u!65 &192325057067554380
 BoxCollider:
   m_ObjectHideFlags: 0

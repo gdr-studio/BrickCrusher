@@ -12,17 +12,18 @@ namespace GameUI
         [Inject] private IUIManager _uiManager;
         [SerializeField] private List<PulsingAnimator> _animators;
         [SerializeField] private MergingUIPage _mergingUI;
-        [SerializeField] private PlayerWeaponCollection _collection;
+        [SerializeField] private PlayerWeaponChannel channel;
         [SerializeField] private MoneyUIPage _moneyUIPage;
         [SerializeField] private PulsingAnimator _startButtonScaler;
         [SerializeField] private float _buttonScalingTime = 0.35f;
+        private bool _shownButton = true;
         
         public override void ShowPage(bool fast)
         {
             if (IsOpen)
                 return;
             base.ShowPage(fast);
-            _button.interactable = true;
+            // _button.interactable = true;
             _button.OnDown += OnClick;
             foreach (var animator in _animators)
                 animator.StartScaling();
@@ -30,7 +31,7 @@ namespace GameUI
             _moneyUIPage.ShowPage(false);
             // _button.gameObject.SetActive(false);
             OnSpawnedCount(0);
-            _collection.SpawnedCount.SubOnChange(OnSpawnedCount);
+            channel.SpawnedCount.SubOnChange(OnSpawnedCount);
         }
 
         public override void HidePage(bool fast)
@@ -40,14 +41,18 @@ namespace GameUI
             base.HidePage(fast);
             _button.OnDown -= OnClick;
             _button.interactable = false;
-            foreach (var animator in _animators)
-            {
-                animator.StopScaling();
-            }
             _mergingUI.HidePage(false);
-            _collection.SpawnedCount.UnsubOnChange(OnSpawnedCount);
+            _startButtonScaler.StopScaling();
+            channel.SpawnedCount.UnsubOnChange(OnSpawnedCount);
         }
 
+        public void ShowOnlyStartButton()
+        {
+            IsOpen = true;
+            _button.OnDown += OnClick;
+            ShowStartButton();
+        }
+        
         public override void OnClick()
         {
             _uiManager.ShowProgress();
@@ -65,23 +70,37 @@ namespace GameUI
         {
             _header.text = text;
         }
+
+        private void ShowStartButton()
+        {
+            _shownButton = true;
+            _startButtonScaler.ShowScaling(_buttonScalingTime, () =>
+            {
+                _button.interactable = true;
+                _startButtonScaler.StartScaling();
+            });
+        }
+
+        private void HideButton()
+        {
+            _shownButton = false;
+            _button.interactable = false;
+            _startButtonScaler.HideScaling(0f, () =>{});       
+        }
         
         private void OnSpawnedCount(int count)
         {
             if (count > 0)
             {
-                _startButtonScaler.ShowScaling(_buttonScalingTime, () =>
-                {
-                    _button.interactable = true;
-                    _startButtonScaler.StartScaling();
-                });
+                if (_shownButton) 
+                    return;
+                ShowStartButton();
             }
             else
             {
-                _button.interactable = false;
-                _startButtonScaler.HideScaling(0f, () =>
-                {
-                });   
+                if (!_shownButton )
+                    return;
+                HideButton();
             }
         }
 

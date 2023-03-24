@@ -21,6 +21,8 @@ namespace GameUI
                 return;
             IsOpen = false;
             MoneyCounter.TotalMoney.UnsubOnChange(OnMoneyChange);
+            _moneyBlock.Stop();
+            _moneyBlock.SetCount();
         }
         
         private void OnMoneyChange(int obj)

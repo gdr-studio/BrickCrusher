@@ -188,8 +188,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spacing: 2
   maxCount: 3
+  moveToActivePointTime: 0.25
   cannonsRepository: {fileID: 11400000, guid: db4386e5e1fca094b8481e5ebdb3c4eb, type: 2}
-  collection: {fileID: 11400000, guid: c3c3e9abd3cf25047806e38d4a065050, type: 2}
+  channel: {fileID: 11400000, guid: c3c3e9abd3cf25047806e38d4a065050, type: 2}
   spawnPoint: {fileID: 4091830281777952549}
   cannonsController: {fileID: 4466301274829413399}
   mergingPosition: {fileID: 1294595445263353636}

@@ -4,7 +4,7 @@ using Zenject;
 
 namespace Weapons.Shooting
 {
-    public class BallShooter : MonoBehaviour, IBallShooter
+    public class BallLauncher : MonoBehaviour, IBallLauncher
     {
         [SerializeField] private CannonShootAnimation _shootAnim;
         [SerializeField] private Transform _fromPoint;

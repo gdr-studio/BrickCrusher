@@ -20,6 +20,11 @@ namespace GameUI
             _text.text = $"{MoneyCounter.TotalMoney.Val}";
         }
 
+        public void Stop()
+        {
+            _scaling?.Kill();
+        }
+        
         public void UpdateCount()
         {
             if (_scaling != null)

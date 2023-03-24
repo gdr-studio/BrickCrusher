@@ -1,11 +1,15 @@
-﻿using Data.Game;
+﻿using System;
+using System.Collections;
+using Data;
+using Data.Game;
 using GameUI;
-using Helpers;
 using LevelBorders;
+using Merging;
 using PlayerInput;
 using Services.Parent;
 using Statues;
 using UnityEngine;
+using Weapons;
 using Zenject;
 
 namespace Levels.Game
@@ -18,7 +22,9 @@ namespace Levels.Game
         [SerializeField] private StatueName _statueName;
         [SerializeField] private Transform _statueSpawn;
         [SerializeField] private WeaponsSpawner _spawner;
-
+        [SerializeField] private CannonsController _cannonsController;
+        [SerializeField] private MainGameConfig _mainGameConfig;
+        
         [Inject] private DiContainer _container;
         [Inject] private IParentService _parentService;
         [Inject] private IStatueRepository _statueRepo;
@@ -33,29 +39,40 @@ namespace Levels.Game
             _parentService.DefaultParent = transform;
             SpawnStatue();
             _inputManager.IsEnabled = true;
+            _cannonsController.OnNoAmmo += OnNoAmmo;
+        }
+
+        private void OnNoAmmo()
+        {
+            Fail();
         }
 
         public override void StartLevel()
         {
             _spawner.InitSpawnedGuns(EnableInput);
+            RaiseOnStarted();
         }
-        
         
         public void Win()
         {
             StopAll();
+            MergingManager.Refresh();
             _uiManager.ShowWin();
         }
 
         public void Fail()
-        {   
-            StopAll();
-            _uiManager.ShowFail();
+        {
+            StartCoroutine(Delayed(_mainGameConfig.FailLevelDelay, () =>
+            {
+                StopAll();
+                // _spawner.Refresh();
+                MergingManager.Refresh();
+                _uiManager.ShowFail();
+            }));
         }
         
         public void Restart()
         {
-               
         }
 
         private void EnableInput()
@@ -101,6 +118,12 @@ namespace Levels.Game
             {
                 Restart();
             }
+        }
+
+        private IEnumerator Delayed(float time, Action action)
+        {
+            yield return new WaitForSeconds(time);
+            action.Invoke();
         }
     }
 }

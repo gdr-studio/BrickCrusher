@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Helpers;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -7,15 +7,19 @@ using Weapons;
 
 namespace Merging
 {
-    public partial class MergingInputManager : MonoBehaviour
+    public partial class MergingManager : MonoBehaviour
     {
+        public static event Action OnSpawned;
+        
+        private static MergingManager _instance;
+        [SerializeField] private List<MergingItemArea> _areas;
         [SerializeField] private LayerMask _spawnMask;
         [SerializeField] private LayerMask _cannonsMask;
         [SerializeField] private MergingPurchaser _purchaser;
         [SerializeField] private MergingLogic _mergingLogic;
         [SerializeField] private GraphicRaycaster _raycaster;
         [SerializeField] private EventSystem _eventSystem;
-        [SerializeField] private PlayerWeaponCollection _collection;
+        [SerializeField] private PlayerWeaponChannel _weaponChannel;
         [Space(20)]
         private PointerEventData _pointerEventData;
         public Image movingImage;
@@ -23,20 +27,34 @@ namespace Merging
         private Camera _camera;
 
         private bool _isEnabled;
-        public bool IsEnabled
+        public static bool IsEnabled
         {
-            get => _isEnabled;
-            set => _isEnabled = value;
+            get => _instance._isEnabled;
+            set => _instance._isEnabled = value;
         }
-
+        public static void Refresh() => _instance.RefreshMerging();
+        
         private void Awake()
         {
+            if(_instance == null)
+                _instance = this;
+            _purchaser.areas = _areas;
             _movingData = new MovingData();
             _movingData.movable = movingImage.transform;
             _movingData.image = movingImage;
             movingImage.enabled = false;
             IsEnabled = true;
             _camera = Camera.main;
+        }
+
+        private void RefreshMerging()
+        {
+            foreach (var area in _areas)
+            {
+                area.SetEmpty();
+            }   
+            _purchaser.CheckPurchasable();
+            _weaponChannel.SpawnedCount.Val = 0;
         }
         
         private void Update()
@@ -57,7 +75,7 @@ namespace Merging
             {
                 if (_movingData.data == null)
                     return;
-                Move(Vector3.zero);
+                Move();
                 CheckMouseOver();
             }
         }
@@ -105,7 +123,7 @@ namespace Merging
                 var cannon = result.collider.gameObject.GetComponent<CannonSpawnable>();
                 if (cannon != null)
                 {
-                    _collection.CallRemoveCannon(cannon);
+                    _weaponChannel.CallRemoveCannon(cannon);
                     cannon.MergingArea.SetDataBack();
                     cannon.MergingArea.PlayReturnEffect();
                     // _purchaser.ReturnMoney(cannon.cannonName);
@@ -128,7 +146,7 @@ namespace Merging
             if (_movingData.IsSpawned)
                 return;
             // NOT on UI and NOT spawned
-            if (_collection.CanSpawn() == false)
+            if (_weaponChannel.CanSpawn() == false)
                 return;
             if (RaycastWorld(_spawnMask).Length > 0)
             {
@@ -139,15 +157,16 @@ namespace Merging
         private void RemoveLastSpawned()
         {
             // Debug.Log("is ON ui and spawned");
-            _collection.CallRemoveLast();
+            _weaponChannel.CallRemoveLast();
             _movingData.IsSpawned = false;
         }
         
         private void Spawn()
         {
-            _collection.CallSpawnCannon(_movingData.data, _movingData.fromArea);
+            _weaponChannel.CallSpawnCannon(_movingData.data, _movingData.fromArea);
             _movingData.fromArea.SetSpawned();
             _movingData.IsSpawned = true;
+            OnSpawned?.Invoke();
         }
 
         private bool IsOverUI()
@@ -232,7 +251,7 @@ namespace Merging
             _purchaser.CheckPurchasable();
         }
         
-        private void Move(Vector2 moveDir)
+        private void Move()
         {
             _movingData.movable.transform.position = Input.mousePosition;
         }

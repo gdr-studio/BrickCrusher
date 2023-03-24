@@ -1,4 +1,5 @@
 ﻿// #define SET_WEAPONS_SAME
+using System;
 using System.Collections.Generic;
 using Data.Game;
 using UnityEngine;
@@ -10,11 +11,15 @@ namespace Weapons
 {
     public class CannonsController : MonoBehaviour, IWeapon
     {
+        public event Action OnNoAmmo;
+        public event Action OnGrabbed;
+
         public CannonSettings settings;
         public WeaponOneDMover mover;
         public CannonsShooter shooter;
         public MoverLimitSetter limitSetter;
         public List<Cannon> cannons;
+        private int _outOfAmmoCannonsCount;
         
         public void Init()
         {
@@ -34,11 +39,21 @@ namespace Weapons
             #else
             foreach (var cannon in cannons)
             {
-                cannon.Init();  
+                cannon.Init();
+                cannon.Shooter.OnOutOfAmmo += OnOutOfAmmo;
             }
             #endif
         }
-        
+
+        private void OnOutOfAmmo()
+        {
+            _outOfAmmoCannonsCount++;
+            if (_outOfAmmoCannonsCount == cannons.Count)
+            {
+                OnNoAmmo.Invoke();   
+            }
+        }
+
         public void Kill()
         {
             shooter.StopShooting();
@@ -47,7 +62,10 @@ namespace Weapons
                 cannon.Shooter.StopShooting();
             }
         }
-        
+
+        public Vector3 Position => transform.position;
+
+
         public void Grab()
         {
 #if SET_WEAPONS_SAME
@@ -58,6 +76,7 @@ namespace Weapons
                 c.Shooter.StartShooting();
             }
 #endif
+            OnGrabbed?.Invoke();
         }
 
         public void Release()

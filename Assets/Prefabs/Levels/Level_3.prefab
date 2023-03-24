@@ -59,6 +59,8 @@ MonoBehaviour:
   _statueName: {fileID: 11400000, guid: 354f294b0b85d4f4bae39e92ae907904, type: 2}
   _statueSpawn: {fileID: 6544817465450440027}
   _spawner: {fileID: 7155811131176604285}
+  _cannonsController: {fileID: 0}
+  _mainGameConfig: {fileID: 11400000, guid: 34347d4ddb1e50749b3224f996ac6b5c, type: 2}
 --- !u!114 &4286541426779794137
 MonoBehaviour:
   m_ObjectHideFlags: 0

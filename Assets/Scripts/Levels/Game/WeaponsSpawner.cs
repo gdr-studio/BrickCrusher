@@ -14,7 +14,7 @@ namespace Levels.Game
         public int maxCount = 3;
         public float moveToActivePointTime = 0.25f;
         public CannonRepository cannonsRepository;
-        public PlayerWeaponCollection collection;
+        public PlayerWeaponChannel channel;
         public Transform spawnPoint;
         public CannonsController cannonsController;
         public Transform mergingPosition;
@@ -23,10 +23,15 @@ namespace Levels.Game
 
         private void OnEnable()
         {
-            collection.SpawnCannon = PreStartSpawn;
-            collection.RemoveLast = PreStartRemoveLast;
-            collection.RemoveCannon = PreStartRemove;
-            collection.CheckSpawnAvailable = PreCanSpawn;
+            channel.SpawnCannon = PreStartSpawn;
+            channel.RemoveLast = PreStartRemoveLast;
+            channel.RemoveCannon = PreStartRemove;
+            channel.CheckSpawnAvailable = PreCanSpawn;
+            cannonsController.transform.localPosition = mergingPosition.localPosition;
+        }
+
+        public void Refresh()
+        {
             cannonsController.transform.localPosition = mergingPosition.localPosition;
         }
         
@@ -51,13 +56,13 @@ namespace Levels.Game
             var lastPos = positions[count - 1];
             var spawnable = SpawnCannon(data.cannonName, lastPos);
             spawnable.MergingArea = area;
-            collection.SpawnedCount.Val++;
+            channel.SpawnedCount.Val++;
         }
 
         private void PreStartRemove(CannonSpawnable cannonSpawnable)
         {
             _spawnedCannons.Remove(cannonSpawnable);
-            collection.SpawnedCount.Val--;
+            channel.SpawnedCount.Val--;
             cannonSpawnable.Delete();
             if (_spawnedCannons.Count == 0)
                 return;
@@ -69,7 +74,7 @@ namespace Levels.Game
         private void PreStartRemoveLast()
         {
             var count = _spawnedCannons.Count - 1;
-            collection.SpawnedCount.Val--;
+            channel.SpawnedCount.Val--;
             var positions = CalculatePositions(count);
             var lastCannon = _spawnedCannons[count];
             _spawnedCannons.Remove(lastCannon);

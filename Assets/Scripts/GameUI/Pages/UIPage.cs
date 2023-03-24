@@ -5,6 +5,7 @@ namespace GameUI
 {
     public class UIPage : MonoBehaviour
     {
+        [SerializeField] private int _order = 1;
         [SerializeField] protected Canvas _canvas;
         [SerializeField] protected GraphicRaycaster _raycaster;
 
@@ -34,7 +35,7 @@ namespace GameUI
         public virtual void ShowPage(bool fast)
         {
             IsOpen = true;
-            _canvas.sortingOrder = 1;
+            _canvas.sortingOrder = _order;
         }
 
         public virtual void HidePage(bool fast)

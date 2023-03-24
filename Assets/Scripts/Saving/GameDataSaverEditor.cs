@@ -11,6 +11,8 @@ namespace Saving
         {
             var me = target as GameDataSaver;
             base.OnInspectorGUI();
+            
+            GUILayout.BeginHorizontal();
             if (GUILayout.Button("Save"))
             {
                 me.SaveData();
@@ -20,7 +22,12 @@ namespace Saving
             {
                 me.LoadData();
             }
+            GUILayout.EndHorizontal();
 
+            if (GUILayout.Button($"ClearAll"))
+            {
+                me.ClearData();
+            }
             if (GUILayout.Button("Path"))
             {
                 me.DebugPath();

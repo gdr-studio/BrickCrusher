@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Data;
 using Helpers;
 using Money;
@@ -9,11 +10,13 @@ namespace Merging
 {
     public class MergingPurchaser : MonoBehaviour
     {
+        public event Action<MergingItemArea> OnPurchased;
+        
         public int DebugCount = 100;
         public Transform mergableAreasParent;
         public MainGameConfig config;
         public MergingDataRepository repository;
-        public List<MergingItemArea> areas = new List<MergingItemArea>();
+        public List<MergingItemArea> areas;
         private void OnEnable()
         {
             if(DebugCount > 0)
@@ -73,6 +76,7 @@ namespace Merging
             var data = repository.GetFirstLevel();
             area.SetData(data);
             area.PlayBuyEffect();
+            OnPurchased?.Invoke(area);
         }
 
         public void ReturnMoney(CannonName cannonName)

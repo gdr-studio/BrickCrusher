@@ -7,17 +7,18 @@ namespace Weapons
     public class SimpleCannon : Cannon
     {
         [SerializeField] private CannonName _cannonName;
-        public CannonSettings Settings;
 
-        public override CannonName cannonName => _cannonName;
+
+        public override CannonName Name => _cannonName;
 
         public override void Init()
         {
             Mover = gameObject.GetComponent<IWeaponMover>();
-            BallShooter = gameObject.GetComponent<IBallShooter>();
-            // Shooter = gameObject.GetComponent<CannonShooter>();
+            BallLauncher = gameObject.GetComponent<IBallLauncher>();
+            Shooter = gameObject.GetComponent<ICannonShooter>();
+            
             Shooter.Settings = Settings.shooting;
-            BallShooter.Settings = Settings.shooting;
+            BallLauncher.Settings = Settings.shooting;
         }
         
   

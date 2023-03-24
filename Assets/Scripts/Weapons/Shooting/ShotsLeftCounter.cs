@@ -1,6 +1,4 @@
-﻿using System;
-using Data.Game;
-using DG.Tweening;
+﻿using DG.Tweening;
 using React;
 using TMPro;
 using UnityEngine;
@@ -16,7 +14,7 @@ namespace Weapons.Shooting
         [SerializeField] private float _scaleTime;
         [SerializeField] private Ease _scaleEase;
         private Sequence _scaling;
-
+        private int _prevVal;
         public void Init(ReactiveProperty<int> shotsLeft)
         {
             shotsLeft.SubOnChange(OnCountChange);
@@ -24,11 +22,13 @@ namespace Weapons.Shooting
             SetCount(shotsLeft.Val);
         }
 
-
         private void OnCountChange(int val)
         {
             if (_scaling != null)
-                return;
+            {
+                _scaling.Kill();
+                SetCount(val);
+            }
             _scaling = DOTween.Sequence();
             _scaleTarget.localScale = Vector3.one * _normalScale;
             _scaling.Append(
@@ -38,8 +38,9 @@ namespace Weapons.Shooting
                 .OnComplete(() => { _scaling = null;});
         }
 
-        private void SetCount(int count)
+        public void SetCount(int count)
         {
+            _prevVal = count;
             _text.text = $"{count}";
         }
     }

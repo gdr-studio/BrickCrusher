@@ -303,8 +303,6 @@ MonoBehaviour:
   _canvas: {fileID: 6753729076199926977}
   _raycaster: {fileID: 6753729076199926991}
   _purchaser: {fileID: 6753729076199926978}
-  _inputManager: {fileID: 6753729076199926976}
-  _activeRow: {fileID: 0}
   _mergingInitiator: {fileID: 6753729076199926981}
 --- !u!114 &6753729076199926976
 MonoBehaviour:
@@ -318,6 +316,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f96199ebbac54060903b154671a7da10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _areas:
+  - {fileID: 1180472805697068244}
+  - {fileID: 5194987320810047060}
+  - {fileID: 5194987322079096091}
+  - {fileID: 5194987322186942416}
+  - {fileID: 5194987321780614011}
+  - {fileID: 5194987321605773632}
+  - {fileID: 5194987320501971401}
+  - {fileID: 5194987320253375106}
   _spawnMask:
     serializedVersion: 2
     m_Bits: 256
@@ -328,7 +335,7 @@ MonoBehaviour:
   _mergingLogic: {fileID: 6753729076199926979}
   _raycaster: {fileID: 6753729076199926991}
   _eventSystem: {fileID: 0}
-  _collection: {fileID: 11400000, guid: c3c3e9abd3cf25047806e38d4a065050, type: 2}
+  _weaponChannel: {fileID: 11400000, guid: c3c3e9abd3cf25047806e38d4a065050, type: 2}
   movingImage: {fileID: 6753729075298065466}
 --- !u!114 &6753729076199926979
 MonoBehaviour:
@@ -355,7 +362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 778c23f31528429f98d7c89dd6f4f032, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DebugCount: 1000
+  DebugCount: 0
   mergableAreasParent: {fileID: 6753729075883821574}
   config: {fileID: 11400000, guid: 34347d4ddb1e50749b3224f996ac6b5c, type: 2}
   repository: {fileID: 11400000, guid: a448c7a6de47f5b4fb3185ecb55747a6, type: 2}
@@ -389,8 +396,9 @@ MonoBehaviour:
   - {fileID: 5194987321605773632}
   - {fileID: 5194987320501971401}
   - {fileID: 5194987320253375106}
-  activeRow: {fileID: 0}
   repository: {fileID: 11400000, guid: a448c7a6de47f5b4fb3185ecb55747a6, type: 2}
+  purchaser: {fileID: 6753729076199926978}
+  config: {fileID: 11400000, guid: 34347d4ddb1e50749b3224f996ac6b5c, type: 2}
 --- !u!1 &6753729076404852104
 GameObject:
   m_ObjectHideFlags: 0

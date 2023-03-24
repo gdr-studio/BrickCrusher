@@ -8,7 +8,7 @@ namespace Merging
     {
         public List<MergingItemArea> areas = new List<MergingItemArea>();
         public ReactiveProperty<bool> hasChosen = new ReactiveProperty<bool>();
-        public PlayerWeaponCollection playerCollection;
+        public PlayerWeaponChannel playerChannel;
 
         public bool IsEmpty => MergingHelpers.CheckFullEmpty(areas);
         private void OnEnable()

@@ -1,12 +1,14 @@
 ﻿using DG.Tweening;
 using Merging;
 using UnityEngine;
+using Weapons.Shooting;
 
 namespace Weapons
 {
     public class CannonSpawnable : MonoBehaviour
     {
         public Cannon cannon;
+        public ShotsLeftCounter shotsCounter; 
         public float NormalScale;
         public Ease ScaleEase;
         public Ease MovingEase;
@@ -20,6 +22,7 @@ namespace Weapons
             transform.localScale = Vector3.zero;
             transform.DOScale(Vector3.one * NormalScale, ScaleTime).SetEase(ScaleEase);
             spawnParticles.Play();
+            shotsCounter.SetCount(cannon.Settings.shooting.MaxShots);
         }
 
         public void Delete()

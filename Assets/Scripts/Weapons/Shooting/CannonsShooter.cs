@@ -15,7 +15,7 @@ namespace Weapons.Shooting
         private float _elapsedShootTime;
         private bool _didShoot;
         
-        public List<IBallShooter> Shooters { get; set; }
+        public List<IBallLauncher> Shooters { get; set; }
 
         
         public int MaxShoots { get; private set; }

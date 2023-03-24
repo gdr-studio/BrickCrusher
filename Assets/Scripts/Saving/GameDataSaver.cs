@@ -12,11 +12,19 @@ namespace Saving
     {
         private const string FileName = "SavedGameData";
         
-        public PlayerWeaponCollection playerWeapons;
+        public PlayerWeaponChannel playerWeapons;
         private GameData _loadedData;
         
         public override GameData LoadedData => _loadedData;
         private string Path => Application.persistentDataPath + "/" + FileName;
+
+        public void ClearData()
+        {
+            if (File.Exists(Path))
+            {
+                File.WriteAllText(Path, "");
+            }   
+        }
         
         public override void SaveData()
         {

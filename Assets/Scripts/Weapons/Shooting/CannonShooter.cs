@@ -1,24 +1,28 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Data.Game;
 using React;
 using UnityEngine;
 
 namespace Weapons.Shooting
 {
-    public class CannonShooter : MonoBehaviour
+    public class CannonShooter : MonoBehaviour, ICannonShooter
     {
  
         public ShotsLeftCounter shotsCounter;
-        public BallShooter ballShooter;
+        public BallLauncher ballLauncher;
         private ReactiveProperty<int> _leftShots;
         private Coroutine _shooting;
         private float _elapsedShootTime;
         private bool _didShoot;
-
+        private bool _outOfAmmo;
+        
         public int MaxShoots { get; private set; }
         public float FirePeriod { get; private set; }
         
         private ShootingSettings _settings;
+        public event Action OnOutOfAmmo;
+
         public ShootingSettings Settings
         {
             get => _settings;
@@ -34,12 +38,12 @@ namespace Weapons.Shooting
             }
         }
         
-        
         public void StartShooting()
         {
             if(_shooting != null)
                 StopCoroutine(_shooting);
-            _shooting = StartCoroutine(Shooting());
+            if(_outOfAmmo == false)
+                _shooting = StartCoroutine(Shooting());
         }
 
         public void StopShooting()
@@ -59,10 +63,18 @@ namespace Weapons.Shooting
                     yield return null;
                 }
                 yield return null;
-                MinusShot();
+                _leftShots.Val--;
                 _elapsedShootTime = 0f;
                 _didShoot = true;
-                ballShooter.ShootForward();
+                ballLauncher.ShootForward();
+            }
+
+            if (_outOfAmmo == false)
+            {
+                _outOfAmmo = true;
+                // Debug.Log($"done shooting, left count: {_leftShots.Val}");
+                _leftShots.Val = 0;
+                OnOutOfAmmo.Invoke();
             }
         }
         

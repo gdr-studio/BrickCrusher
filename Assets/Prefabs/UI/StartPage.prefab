@@ -258,7 +258,7 @@ MonoBehaviour:
   _button: {fileID: 389381845997309451}
   _animators: []
   _mergingUI: {fileID: 0}
-  _collection: {fileID: 11400000, guid: c3c3e9abd3cf25047806e38d4a065050, type: 2}
+  channel: {fileID: 11400000, guid: c3c3e9abd3cf25047806e38d4a065050, type: 2}
   _moneyUIPage: {fileID: 0}
   _startButtonScaler: {fileID: 389381845546574600}
   _buttonScalingTime: 0.35

@@ -6,8 +6,8 @@ using Weapons;
 
 namespace Merging
 {
-    [CreateAssetMenu(fileName = nameof(PlayerWeaponCollection), menuName = "SO/" + nameof(PlayerWeaponCollection))]
-    public class PlayerWeaponCollection : ScriptableObject
+    [CreateAssetMenu(fileName = nameof(PlayerWeaponChannel), menuName = "SO/" + nameof(PlayerWeaponChannel))]
+    public class PlayerWeaponChannel : ScriptableObject
     {
         public Action<MergingData, MergingItemArea> SpawnCannon;
         public Action<CannonSpawnable> RemoveCannon;

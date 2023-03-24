@@ -9,12 +9,11 @@ namespace GameUI
         [SerializeField] private UIPage _prog;
         [SerializeField] private UIPage _money;
         [SerializeField] private UIPage _mering;
-
-        // is disabled
+        [SerializeField] private UIPage _tutorial;
+        
         public void Init()
         {
             Close();
-            _start.ShowPage(true);
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
@@ -26,6 +25,7 @@ namespace GameUI
             _prog.HidePage(true);
             _money.HidePage(true);
             _mering.HidePage(true);
+            _tutorial.HidePage(true);
         }
 
         public void ShowStart()

@@ -59,6 +59,8 @@ MonoBehaviour:
   _statueName: {fileID: 11400000, guid: 519b45afeca401a4cb7a50633270843b, type: 2}
   _statueSpawn: {fileID: 6544817465450440027}
   _spawner: {fileID: 7155811131176604285}
+  _cannonsController: {fileID: 7079160697633806521}
+  _mainGameConfig: {fileID: 11400000, guid: 34347d4ddb1e50749b3224f996ac6b5c, type: 2}
 --- !u!114 &4286541426779794137
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -584,6 +586,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 979546932849709701, guid: 79c1d2d11af5ef54a911ae4373b5495e, type: 3}
   m_PrefabInstance: {fileID: 6900999508047053998}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7079160697633806521 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4466301274829413399, guid: 79c1d2d11af5ef54a911ae4373b5495e, type: 3}
+  m_PrefabInstance: {fileID: 6900999508047053998}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e45105d93a15432a9b002dbfbc2bb902, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7155811131176604285 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4362802983790646995, guid: 79c1d2d11af5ef54a911ae4373b5495e, type: 3}
