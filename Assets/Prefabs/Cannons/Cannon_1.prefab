@@ -200,7 +200,7 @@ Transform:
   - {fileID: 8588260225377370245}
   - {fileID: 1904104869101706730}
   m_Father: {fileID: 3881228857859372094}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7834753139097073630
 GameObject:
@@ -468,15 +468,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 652706283562438250, guid: 76ad4886f0e4b3345adc5c481edbdb3a, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.4
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 652706283562438250, guid: 76ad4886f0e4b3345adc5c481edbdb3a, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.4
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 652706283562438250, guid: 76ad4886f0e4b3345adc5c481edbdb3a, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.4
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 652706283562438250, guid: 76ad4886f0e4b3345adc5c481edbdb3a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -522,6 +522,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2199503982901028875, guid: 76ad4886f0e4b3345adc5c481edbdb3a, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3272817478390383582, guid: 76ad4886f0e4b3345adc5c481edbdb3a, type: 3}
       propertyPath: m_LocalPosition.y
       value: 4.45
@@ -558,6 +562,10 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 4961248606622146105, guid: 76ad4886f0e4b3345adc5c481edbdb3a, type: 3}
+      propertyPath: NormalScale
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 5569921559362619863, guid: 76ad4886f0e4b3345adc5c481edbdb3a, type: 3}
       propertyPath: _wheels.Array.size
       value: 2
@@ -582,10 +590,6 @@ PrefabInstance:
       propertyPath: _particle
       value: 
       objectReference: {fileID: 5675879691470923436}
-    - target: {fileID: 6392624434564000247, guid: 76ad4886f0e4b3345adc5c481edbdb3a, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8136669500701052148, guid: 76ad4886f0e4b3345adc5c481edbdb3a, type: 3}
       propertyPath: m_IsActive
       value: 1

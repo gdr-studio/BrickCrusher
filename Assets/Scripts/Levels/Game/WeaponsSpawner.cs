@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Data.Game;
 using DG.Tweening;
 using Merging;
 using UnityEngine;
@@ -8,106 +9,235 @@ using Zenject;
 
 namespace Levels.Game
 {
-    public class WeaponsSpawner : MonoBehaviour
+    public partial class WeaponsSpawner : MonoBehaviour
     {
         public float spacing = 1f;
-        public int maxCount = 3;
         public float moveToActivePointTime = 0.25f;
+        public CannonPlacementCost placementCosts;
         public CannonRepository cannonsRepository;
         public PlayerWeaponChannel channel;
         public Transform spawnPoint;
         public CannonsController cannonsController;
         public Transform mergingPosition;
-        [SerializeField] private List<CannonSpawnable> _spawnedCannons;
+        public Vector3 signPositionOffset;
+        [SerializeField] private List<SpawnArea> _spawnedData;
+        private Camera _cam;
+        private TackingData _currentTrackData;
+        private PlacementBuySign _buySign;
         [Inject] private DiContainer _container;
-
-        private void OnEnable()
-        {
-            channel.SpawnCannon = PreStartSpawn;
-            channel.RemoveLast = PreStartRemoveLast;
-            channel.RemoveCannon = PreStartRemove;
-            channel.CheckSpawnAvailable = PreCanSpawn;
-            cannonsController.transform.localPosition = mergingPosition.localPosition;
-        }
-
-        public void Refresh()
-        {
-            cannonsController.transform.localPosition = mergingPosition.localPosition;
-        }
         
         public void InitSpawnedGuns(Action onEnd)
         {
             cannonsController.transform.DOLocalMove(Vector3.zero, moveToActivePointTime);
-            foreach (var spawnable in _spawnedCannons)
+            foreach (var spawnArea in _spawnedData)
             {
-                cannonsController.cannons.Add(spawnable.cannon);
+                if (spawnArea.IsFree)
+                {
+                    spawnArea.Placement.Hide();
+                    continue;
+                }
+                cannonsController.cannons.Add(spawnArea.SpawnedCannon.cannon);
+            }
+
+            if (_buySign != null)
+            {
+                _buySign.Hide();
             }
             cannonsController.Init();
             onEnd?.Invoke();
         }
-        
-        
-        // ReSharper disable Unity.PerformanceAnalysis
-        private void PreStartSpawn(MergingData data, MergingItemArea area)
+
+        private void OnEnable()
         {
-            var count = _spawnedCannons.Count + 1;
+            channel.Track = Track;
+            channel.StopTacking = StopTracking;
+            channel.RemoveCannon = PreStartRemove;
+            channel.CheckSpawnAvailable = CheckCanSpawn;
+            channel.BuyPlacement = BuyNewArea;
+            channel.SpawnedCount.Val = 0;
+            
+            _cam = Camera.main;
+            cannonsController.transform.localPosition = mergingPosition.localPosition;
+            SpawnPlacements();
+        }
+
+        private void OnDisable()
+        {
+            if (_spawnedData == null)
+                return;
+            foreach (var data in _spawnedData)
+            {
+                if(data.Placement != null)
+                    CannonPlacementManager.ReturnOne(data.Placement);
+            }
+        }
+
+        private void SpawnPlacements()
+        {
+            var count = GlobalData.WeaponSlotsCurrent;
+            if (count == 0)
+                return;
             var positions = CalculatePositions(count);
-            RepositionSpawned(positions);
-            var lastPos = positions[count - 1];
-            var spawnable = SpawnCannon(data.cannonName, lastPos);
-            spawnable.MergingArea = area;
-            channel.SpawnedCount.Val++;
+
+            if (count < GlobalData.WeaponSlotsMax)
+            {
+                var position = positions[positions.Count - 1] + signPositionOffset;
+                _buySign = CannonPlacementManager.GetBuySign();
+                _buySign.transform.position = position;
+                _buySign.Show();
+            }
+            _spawnedData = new List<SpawnArea>();
+            for (int i = 0; i < count; i++)
+            {
+                var placement = CannonPlacementManager.GetOne();
+                placement.transform.position = positions[i];
+                placement.Show();
+                _spawnedData.Add(new SpawnArea()
+                {
+                    Position =  positions[i],
+                    ScreenPosition = _cam.WorldToScreenPoint(positions[i]),
+                    Placement = placement,
+                    IsFree = true
+                });
+            }
+        }
+
+
+        private bool Track(MergingData data, MergingItemArea area)
+        {
+            if (_currentTrackData == null)
+            {
+                _currentTrackData = new TackingData();
+                _currentTrackData.fromArea = area;
+                _currentTrackData.mergingData = data;
+                SpawnTracked();
+                return true;
+            }
+            return MoveTracked();
+        }
+
+        private void StopTracking(bool spawn)
+        {
+            if (_currentTrackData == null)
+                return;
+            if (spawn)
+            {
+                // Dbg.Green("dropped and spawned");
+            }
+            else
+            {
+                // Dbg.Yellow("not spawned, stop tracking");
+                if (_currentTrackData.currentArea != null)
+                {
+                    if (_currentTrackData.currentArea.IsFree == false)
+                    {
+                        _currentTrackData.currentArea.Free();
+                        channel.SpawnedCount.Val--;
+                    }
+                }
+            }
+            _currentTrackData = null;
+        }
+        
+        private void SpawnTracked()
+        {
+            _currentTrackData.currentArea?.Free();
+            var spawnArea = GetClosestFreeArea();
+            if (spawnArea.IsFree == false)
+                return;
+            var spawnable = SpawnCannon(_currentTrackData.mergingData.cannonName, spawnArea.Position);
+            spawnable.Spawn();
+            spawnable.MergingArea = _currentTrackData.fromArea;
+            _currentTrackData.Spawnable = spawnable;
+            _currentTrackData.SetArea(spawnArea);
+        }
+
+        private bool MoveTracked()
+        {
+            var spawnArea = GetClosestFree();
+            if (spawnArea != _currentTrackData.currentArea)
+            {
+                if (spawnArea.IsFree == false)
+                    return false;
+                _currentTrackData.currentArea.FreeNoDel();
+                _currentTrackData.SetArea(spawnArea);
+            }
+            return true;
         }
 
         private void PreStartRemove(CannonSpawnable cannonSpawnable)
         {
-            _spawnedCannons.Remove(cannonSpawnable);
+            var area = _spawnedData.Find(t => t.SpawnedCannon == cannonSpawnable);
+            area.Free();
+            _currentTrackData = null;
             channel.SpawnedCount.Val--;
-            cannonSpawnable.Delete();
-            if (_spawnedCannons.Count == 0)
-                return;
-            var positions = CalculatePositions(_spawnedCannons.Count);
-            RepositionSpawned(positions);
-
         }
 
-        private void PreStartRemoveLast()
+        private bool CheckCanSpawn()
         {
-            var count = _spawnedCannons.Count - 1;
-            channel.SpawnedCount.Val--;
-            var positions = CalculatePositions(count);
-            var lastCannon = _spawnedCannons[count];
-            _spawnedCannons.Remove(lastCannon);
-            lastCannon.Delete();
-            RepositionSpawned(positions);
+            // Dbg.Green($"Spawned: {channel.SpawnedCount.Val}, max: {GlobalData.WeaponSlotsCurrent}" +
+            //           $"CAN SPAWN? : {channel.SpawnedCount.Val < GlobalData.WeaponSlotsCurrent}");
+            return channel.SpawnedCount.Val < GlobalData.WeaponSlotsCurrent;
         }
 
-        private bool PreCanSpawn()
-        {
-            return _spawnedCannons.Count < maxCount;
-        }
-        
-        
-        private void RepositionSpawned(List<Vector3> positions)
-        {
-            for (int i = 0; i < _spawnedCannons.Count; i++)
-            {
-                _spawnedCannons[i].Move(positions[i]);
-            }
-        }
- 
 
+        // ReSharper disable Unity.PerformanceAnalysis
         private CannonSpawnable SpawnCannon(CannonName cannonName, Vector3 position)
         {
             var prefab = cannonsRepository.GetPrefab(cannonName);
             var instance = _container.InstantiatePrefabForComponent<Cannon>(prefab, cannonsController.transform);
             instance.transform.position = position;
             instance.transform.rotation = spawnPoint.rotation;
-            _spawnedCannons.Add(instance.GetComponent<CannonSpawnable>());
             var spawnable = instance.gameObject.GetComponent<CannonSpawnable>();
             spawnable.Spawn();
+            channel.SpawnedCount.Val++;
             return spawnable;
         }
+        
+        private void BuyNewArea()
+        {
+            if (placementCosts.CheckCanBuy() == false)
+                return;
+            placementCosts.BuyNext();
+            var count = GlobalData.WeaponSlotsCurrent;
+            var positions = CalculatePositions(count);
+            var lastPos = positions[positions.Count - 1];
+
+            for (int i = 0; i < _spawnedData.Count; i++)
+            {
+                var data = _spawnedData[i];
+                data.Position = positions[i];
+                data.ScreenPosition = _cam.WorldToScreenPoint(positions[i]);
+                // data.Placement.transform.position = positions[i];
+                data.Placement.spawnable.Move(positions[i]);
+                if(data.IsFree == false)
+                    data.SpawnedCannon.Move(positions[i]);
+            }
+            var newPlacement = CannonPlacementManager.GetOne();
+            newPlacement.transform.position = lastPos;
+            newPlacement.Show();
+            _spawnedData.Add(new SpawnArea()
+            {
+                Placement = newPlacement,
+                Position = lastPos,
+                ScreenPosition = _cam.WorldToScreenPoint(lastPos),
+                IsFree = true
+            });
+            
+            if (count < GlobalData.WeaponSlotsMax)
+            {
+                var position = lastPos + signPositionOffset;
+                _buySign = CannonPlacementManager.GetBuySign();
+                _buySign.transform.position = position;
+                _buySign.Show();
+            }
+            else
+            {
+                _buySign.Hide();
+            }
+        }
+        
+        
         
         private List<Vector3> CalculatePositions(int count)
         {
@@ -122,6 +252,41 @@ namespace Levels.Game
                 positions.Add(worldPos);
             }
             return positions;
+        }
+
+        private SpawnArea GetClosestFree()
+        {
+            var shortest = float.MaxValue;
+            var areaRes = _spawnedData[0];
+            var inputPos = Input.mousePosition;
+            foreach (var area in _spawnedData)
+            {
+                var d = (inputPos - area.ScreenPosition).sqrMagnitude;
+                if (d <= shortest)
+                {
+                    shortest = d;
+                    areaRes = area;
+                }
+            }  
+            return areaRes;
+        }
+
+        private SpawnArea GetClosestFreeArea()
+        {
+            var shortest = float.MaxValue;
+            var areaRes = _spawnedData[0];
+            var inputPos = Input.mousePosition;
+            foreach (var area in _spawnedData)
+            {
+                var d = (inputPos - area.ScreenPosition).sqrMagnitude;
+                if (d <= shortest && area.IsFree)
+                {
+                    shortest = d;
+                    areaRes = area;
+                }
+            }  
+            // Debug.Log($"Shortes index: {resIndex}");
+            return areaRes;
         }
     }
 }

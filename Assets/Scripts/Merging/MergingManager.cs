@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Helpers;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -13,7 +14,6 @@ namespace Merging
         
         private static MergingManager _instance;
         [SerializeField] private List<MergingItemArea> _areas;
-        [SerializeField] private LayerMask _spawnMask;
         [SerializeField] private LayerMask _cannonsMask;
         [SerializeField] private MergingPurchaser _purchaser;
         [SerializeField] private MergingLogic _mergingLogic;
@@ -91,14 +91,18 @@ namespace Merging
                     return;
                 }
             }
+            if (TryCastBuySign())
+                return;
             TryRemoveCannon();
         }
-        
+
         private void ProcessDrop(List<RaycastResult> results)
         {
+            if (_movingData.data == null)
+                return;
             if (results.Count == 0)
             {
-                DropAt(null);
+                DropNoUI();
                 return;
             }
             foreach (var result in results)
@@ -110,6 +114,21 @@ namespace Merging
                     return;
                 }
                 DropAt(null);
+            }   
+        }
+
+        private void DropNoUI()
+        {
+            if (IsOverUI())
+            {
+                DropAt(null);
+            }
+            else
+            {
+                if(_movingData.IsSpawned)
+                    FinalSpawn();
+                else
+                    DropAt(_movingData.fromArea);                    
             }   
         }
 
@@ -131,44 +150,65 @@ namespace Merging
             }
         }
 
+   
+        
+        private bool TryCastBuySign()
+        {
+         
+            var results = RaycastWorld(_cannonsMask);
+            if (results.Length == 0)
+                return false;
+            foreach (var result in results)
+            {
+                var buySign = result.collider.gameObject.GetComponent<PlacementBuySign>();
+                if (buySign != null)
+                {
+                    _weaponChannel.BuyPlacement.Invoke();
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private void CheckMouseOver()
         {
             // IS on UI
             if (IsOverUI())
             {
                 if (_movingData.IsSpawned)
-                {
-                    RemoveLastSpawned();
-                }
+                    StopTracking();
                 return;
             }
-            // NOT on UI and spawned
-            if (_movingData.IsSpawned)
-                return;
-            // NOT on UI and NOT spawned
             if (_weaponChannel.CanSpawn() == false)
                 return;
-            if (RaycastWorld(_spawnMask).Length > 0)
-            {
-                Spawn();
-            }
+            Track();
         }
 
-        private void RemoveLastSpawned()
-        {
-            // Debug.Log("is ON ui and spawned");
-            _weaponChannel.CallRemoveLast();
-            _movingData.IsSpawned = false;
-        }
         
-        private void Spawn()
+        private void Track()
         {
-            _weaponChannel.CallSpawnCannon(_movingData.data, _movingData.fromArea);
+            var can = _weaponChannel.CheckSpawnAvailable.Invoke();
+            if (can)
+            {
+                _weaponChannel.Track.Invoke(_movingData.data, _movingData.fromArea);
+            }
+            _movingData.IsSpawned = can;
+        }
+
+        private void FinalSpawn()
+        {
+            _weaponChannel.StopTacking.Invoke(true);   
             _movingData.fromArea.SetSpawned();
-            _movingData.IsSpawned = true;
+            _movingData.HideAndClear();
             OnSpawned?.Invoke();
         }
 
+        private void StopTracking()
+        {
+            _weaponChannel.StopTacking.Invoke(false);   
+            _movingData.IsSpawned = false;
+        }
+        
         private bool IsOverUI()
         {
             var results = RaycastUI();
@@ -216,6 +256,7 @@ namespace Merging
                 _purchaser.CheckPurchasable();
                 return;
             }
+            StopTracking();
             if (_movingData.IsSpawned)
             {
                 _movingData.HideAndClear();

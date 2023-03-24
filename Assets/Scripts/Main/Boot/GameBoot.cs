@@ -1,4 +1,6 @@
 ﻿using System;
+using Data;
+using Data.Game;
 using Game.Sound;
 using GameUI;
 using Levels;
@@ -17,6 +19,7 @@ namespace Main.Boot
         [SerializeField] private SceneContext _context;
         [SerializeField] private GameDataSaver _dataSaver;
         [SerializeField] private TutorialManager _tutorial;
+        
         [Inject] private ILevelManager _levelManager;
         [Inject] private ISoundManager _soundManager;
         [Inject] private IInputManager _input;
@@ -25,12 +28,15 @@ namespace Main.Boot
         
         private void Awake()
         {
+            _dataSaver.LoadData();
+
             _context.Run();
+            GlobalData.WeaponSlotsMax = 4;
+            GlobalData.WeaponSlotsCurrent = 1;
         }
 
         private void Start()
         {
-            _dataSaver.LoadData();
             _levelManager.Init();
             if(doLoadLevels)
                 _levelManager.LoadLast();

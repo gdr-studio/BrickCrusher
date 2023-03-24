@@ -15,11 +15,17 @@ namespace Weapons.Shooting
         [SerializeField] private Ease _scaleEase;
         private Sequence _scaling;
         private int _prevVal;
+        
         public void Init(ReactiveProperty<int> shotsLeft)
         {
             shotsLeft.SubOnChange(OnCountChange);
-            transform.rotation = Quaternion.identity;
             SetCount(shotsLeft.Val);
+            InitRotation();
+        }
+
+        public void InitRotation()
+        {
+            transform.rotation = Quaternion.LookRotation( -(Camera.main.transform.position - transform.position));
         }
 
         private void OnCountChange(int val)

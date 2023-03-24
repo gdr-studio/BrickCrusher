@@ -42,6 +42,16 @@ namespace LittleTricks
             target.localScale = Vector3.one * from;
             target.DOScale(Vector3.one * to, time).SetEase(Ease.InCubic).OnComplete(() => { onEnd?.Invoke(); });
         }
-        
+
+        public void StartScalingLoop()
+        {
+            _scalingSeq?.Kill();
+            _scalingSeq = DOTween.Sequence();
+            _scalingSeq.Append(target.DOScale(Vector3.one * minScale, toDownTime))
+                .Append(target.DOScale(Vector3.one * normalScale, toNormalTime))
+                .Append(target.DOScale(Vector3.one * maxScale, toUpTime))
+                .Append(target.DOScale(Vector3.one * normalScale, toNormalTime))
+                .SetLoops(-1);
+        }
     }
 }

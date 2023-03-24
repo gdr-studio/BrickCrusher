@@ -19,12 +19,18 @@ namespace Weapons
         public MergingItemArea MergingArea { get; set; }
         public void Spawn()
         {
+            SpawnScalingUp();
+            shotsCounter.SetCount(cannon.Settings.shooting.MaxShots);
+            shotsCounter.InitRotation();
+        }
+
+        public void SpawnScalingUp()
+        {
             transform.localScale = Vector3.zero;
             transform.DOScale(Vector3.one * NormalScale, ScaleTime).SetEase(ScaleEase);
             spawnParticles.Play();
-            shotsCounter.SetCount(cannon.Settings.shooting.MaxShots);
         }
-
+        
         public void Delete()
         {
             var time = (transform.localScale.x) / NormalScale * ScaleTime;

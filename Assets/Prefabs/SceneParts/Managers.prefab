@@ -1,5 +1,52 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1608486258
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1608486259}
+  - component: {fileID: 1608486260}
+  m_Layer: 0
+  m_Name: CannonPlacementManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1608486259
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608486258}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -5.856447, y: -0.99968284, z: -25.690434}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4037079545213211573}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1608486260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608486258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94c7dc045c9f45a1af55eb9d614e0d5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _signPrefab: {fileID: 5954310980651247303, guid: e265920f7dfa1134bb1db5319ab3d755, type: 3}
+  _placementPrefab: {fileID: -3043387202050542233, guid: 38a44e22813dffb449a50afa99a4ceab, type: 3}
+  _preSpawnCount: 8
 --- !u!1 &608633017869339181
 GameObject:
   m_ObjectHideFlags: 0
@@ -340,6 +387,7 @@ Transform:
   - {fileID: 2662179725529781502}
   - {fileID: 80439351779951220}
   - {fileID: 4037079544805541657}
+  - {fileID: 1608486259}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -355,9 +403,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af87a01b566e4bc4b661e6318c90ea70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doLoadLevels: 0
+  showTutor: 1
+  doLoadLevels: 1
   _context: {fileID: 4037079545213211571}
   _dataSaver: {fileID: 11400000, guid: 2faa7c673be562a49a0587f5ceab6204, type: 2}
+  _tutorial: {fileID: 0}
 --- !u!114 &4037079545213211571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -555,6 +605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f69c88c4a393408c8127ca240fc81b51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DoSave: 1
   _saver: {fileID: 11400000, guid: 2faa7c673be562a49a0587f5ceab6204, type: 2}
   _config: {fileID: 11400000, guid: 34347d4ddb1e50749b3224f996ac6b5c, type: 2}
 --- !u!1 &6034469301151757997

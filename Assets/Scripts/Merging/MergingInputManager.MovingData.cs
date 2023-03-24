@@ -11,6 +11,29 @@ namespace Merging
             public Image image;
             public MergingItemArea fromArea;
             public MergingData data;
+            private bool _isTracked;
+
+            public bool IsTracked
+            {
+                get => _isTracked;
+                set
+                {
+                    if (_isTracked == value)
+                        return;
+                    _isTracked = value;
+                    return;
+                    if (value)
+                    {
+                        image.enabled = false;
+                    }
+                    else
+                    {
+                        image.enabled = true;
+                    }
+                }
+            }
+            
+            
 
             private bool _isSpawned;
             public bool IsSpawned
