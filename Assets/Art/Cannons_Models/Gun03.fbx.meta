@@ -5,6 +5,26 @@ ModelImporter:
   internalIDToNameTable: []
   externalObjects:
   - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Base03
+    second: {fileID: 2100000, guid: 79dd5024dc06f5c4391ed72acd33ddb4, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Gun03_Base03_BaseColor
+    second: {fileID: 2800000, guid: 8c711e350bc1bba4ea2adc24bd46caa4, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Gun03_Base03_Metallic
+    second: {fileID: 2800000, guid: d7815d1cada84a44d922acfd453c7fb4, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Gun03_Base03_Roughness
+    second: {fileID: 2800000, guid: 405fcdbb823aaed48a1498c249bdf929, type: 3}
+  - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Gun03_DefaultMaterial_BaseColor

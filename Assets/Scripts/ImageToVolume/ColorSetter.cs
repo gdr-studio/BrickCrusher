@@ -38,16 +38,10 @@ namespace ImageToVolume
 
         public void UpdateTilingAndOffset()
         {
-            // var mat = renderer.material;
-            // mat.mainTextureOffset = offset;
-            // mat.mainTextureScale = tiling;
-            // renderer.material = mat;
-  
             var block = new MaterialPropertyBlock();
             renderer.GetPropertyBlock(block);
             block.SetVector(TilingOffsetVector, new Vector4(tiling.x, tiling.y, offset.x, offset.y));
             renderer.SetPropertyBlock(block);
-            
         }
 
 
