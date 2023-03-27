@@ -7,6 +7,16 @@ ModelImporter:
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
+      name: Gun07_Base07_BaseColor
+    second: {fileID: 2800000, guid: 9980a167d7ca14647bb7389ed42b0cce, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Gun07_Base07_Metallic
+    second: {fileID: 2800000, guid: 4450d60a31af5f64e9a2b91749ec79ba, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
       name: Gun07_DefaultMaterial_BaseColor
     second: {fileID: 2800000, guid: e95ff43c3ab449048bdfbf5d25294a3e, type: 3}
   materials:
