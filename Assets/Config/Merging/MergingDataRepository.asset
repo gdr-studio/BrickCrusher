@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab7f158aa0ce4b53adc60e3d0096a69c, type: 3}
   m_Name: MergingDataRepository
   m_EditorClassIdentifier: 
+  config: {fileID: 11400000, guid: 34347d4ddb1e50749b3224f996ac6b5c, type: 2}
   repository:
   - {fileID: 11400000, guid: c7ccd0b82613a6d429d34f8dd795ef05, type: 2}
   - {fileID: 11400000, guid: 4e2da567d7d7d9f4e90b88c66959c905, type: 2}
@@ -21,3 +22,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 708c16c1a1200be47a66882667dc57f6, type: 2}
   - {fileID: 11400000, guid: cb006b42076cb1044bf8580070cdd1b0, type: 2}
   - {fileID: 11400000, guid: 656c8cf52edd8554d898168e37217dde, type: 2}
+  - {fileID: 11400000, guid: 6b1b35de1cba65949b37cdf57d308112, type: 2}
+  - {fileID: 11400000, guid: 8ef925d2294392f43a5b21dbd3eb67a9, type: 2}

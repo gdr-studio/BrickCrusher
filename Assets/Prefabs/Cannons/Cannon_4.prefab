@@ -625,11 +625,11 @@ PrefabInstance:
     - target: {fileID: 3404466741049741903, guid: 76ad4886f0e4b3345adc5c481edbdb3a, type: 3}
       propertyPath: Settings
       value: 
-      objectReference: {fileID: 11400000, guid: 38a8ce5cfcbeec04499162b951e19252, type: 2}
+      objectReference: {fileID: 11400000, guid: ae3e3765c9647204fb1c6523dd0967d5, type: 2}
     - target: {fileID: 3404466741049741903, guid: 76ad4886f0e4b3345adc5c481edbdb3a, type: 3}
       propertyPath: _cannonName
       value: 
-      objectReference: {fileID: 11400000, guid: 7bb8df7ade417f341b72d442dd319b2d, type: 2}
+      objectReference: {fileID: 11400000, guid: 568b8e44222195e43ae270390eaa11de, type: 2}
     - target: {fileID: 4542638150510932920, guid: 76ad4886f0e4b3345adc5c481edbdb3a, type: 3}
       propertyPath: target
       value: 

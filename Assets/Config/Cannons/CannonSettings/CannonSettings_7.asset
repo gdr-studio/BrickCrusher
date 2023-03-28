@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: CannonSettings_7
   m_EditorClassIdentifier: 
   shooting:
-    cannonBall: {fileID: 11400000, guid: c6229942dade2664f8cfff67a95e9562, type: 2}
-    MaxShots: 60
+    cannonBall: {fileID: 11400000, guid: 1f3dd84a35667454db124fc2a6443e90, type: 2}
+    MaxShots: 80
     ShootDelay: 0.3
     Damage: 1
     DamageOne: 1
     Range: 0
     MaxMoveDist: 12
-    MoveTime: 0.8
+    MoveTime: 0.6
   moving:
     MoveSpeed: 15

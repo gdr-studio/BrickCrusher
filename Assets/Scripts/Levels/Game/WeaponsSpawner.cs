@@ -13,10 +13,11 @@ namespace Levels.Game
     {
         public float spacing = 1f;
         public float moveToActivePointTime = 0.25f;
+        public float bigScale = 1.5f;
+        public float normalScale = 1f;
         public CannonPlacementCost placementCosts;
         public CannonRepository cannonsRepository;
         public PlayerWeaponChannel channel;
-        public Transform spawnPoint;
         public CannonsController cannonsController;
         public Transform mergingPosition;
         public Vector3 signPositionOffset;
@@ -29,6 +30,7 @@ namespace Levels.Game
         public void InitSpawnedGuns(Action onEnd)
         {
             cannonsController.transform.DOLocalMove(Vector3.zero, moveToActivePointTime);
+            cannonsController.transform.DOScale(Vector3.one * normalScale, moveToActivePointTime);
             foreach (var spawnArea in _spawnedData)
             {
                 if (spawnArea.IsFree)
@@ -49,6 +51,7 @@ namespace Levels.Game
 
         private void OnEnable()
         {
+            cannonsController.transform.localScale = Vector3.one * bigScale;
             channel.Track = Track;
             channel.StopTacking = StopTracking;
             channel.RemoveCannon = PreStartRemove;
@@ -90,6 +93,7 @@ namespace Levels.Game
             for (int i = 0; i < count; i++)
             {
                 var placement = CannonPlacementManager.GetOne();
+                placement.transform.localScale = bigScale * Vector3.one;
                 placement.transform.position = positions[i];
                 placement.Show();
                 _spawnedData.Add(new SpawnArea()
@@ -187,7 +191,7 @@ namespace Levels.Game
             var prefab = cannonsRepository.GetPrefab(cannonName);
             var instance = _container.InstantiatePrefabForComponent<Cannon>(prefab, cannonsController.transform);
             instance.transform.position = position;
-            instance.transform.rotation = spawnPoint.rotation;
+            instance.transform.rotation = cannonsController.transform.rotation;
             var spawnable = instance.gameObject.GetComponent<CannonSpawnable>();
             spawnable.Spawn();
             channel.SpawnedCount.Val++;
@@ -215,6 +219,7 @@ namespace Levels.Game
             }
             var newPlacement = CannonPlacementManager.GetOne();
             newPlacement.transform.position = lastPos;
+            newPlacement.transform.localScale = bigScale * Vector3.one;
             newPlacement.Show();
             _spawnedData.Add(new SpawnArea()
             {
@@ -248,7 +253,7 @@ namespace Levels.Game
             for (int i = 0; i < count; i++)
             {
                 var localPos = Vector3.zero + spacing * i * Vector3.right - center;
-                var worldPos = spawnPoint.TransformPoint(localPos);
+                var worldPos = cannonsController.transform.TransformPoint(localPos);
                 positions.Add(worldPos);
             }
             return positions;

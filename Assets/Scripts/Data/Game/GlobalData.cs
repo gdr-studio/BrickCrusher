@@ -6,6 +6,8 @@ namespace Data.Game
 {
     public static class GlobalData
     {
+        public static int CurrentWeaponMaxLevel = 1;
+        
         public static int WeaponSlotsCurrent;
         public static int WeaponSlotsMax;
 

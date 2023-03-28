@@ -5,6 +5,16 @@ ModelImporter:
   internalIDToNameTable: []
   externalObjects:
   - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Base10.001
+    second: {fileID: 2100000, guid: c93e99fd46d7fcb4090ea70a2f146fdc, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Gun10_Base10.001_BaseColor
+    second: {fileID: 2800000, guid: 1767057016b02eb4a8dfa31ad8dd3a0b, type: 3}
+  - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Gun10_DefaultMaterial_BaseColor

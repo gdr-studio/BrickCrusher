@@ -1,3 +1,4 @@
+using Data.Game;
 using UnityEngine;
 
 namespace Merging
@@ -15,7 +16,7 @@ namespace Merging
                 return false;
             }
             var newLevel = levelFrom + levelTo;
-            var nextData = _repository.GetNext(data);
+            var (nextData, newIndex) = _repository.GetNextWithIndex(data);
             if (nextData == null)
             {
                 Debug.Log($"no more merging at level: {levelFrom}");
@@ -26,6 +27,11 @@ namespace Merging
                 Debug.LogError($"Next data.level != new level: {newLevel}");
                 return false;
             }
+
+            var weaponLevel = newIndex + 1;
+            if (weaponLevel > GlobalData.CurrentWeaponMaxLevel)
+                GlobalData.CurrentWeaponMaxLevel = weaponLevel;
+            Debug.Log($"Merged new level, index: {weaponLevel}");
             area.SetData(nextData);
             area.PlayMergeEffect();
             return true;

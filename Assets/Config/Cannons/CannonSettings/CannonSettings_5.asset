@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: CannonSettings_5
   m_EditorClassIdentifier: 
   shooting:
-    cannonBall: {fileID: 11400000, guid: c6229942dade2664f8cfff67a95e9562, type: 2}
-    MaxShots: 40
-    ShootDelay: 0.4
+    cannonBall: {fileID: 11400000, guid: d0d87150b90dc2148be370f414714942, type: 2}
+    MaxShots: 60
+    ShootDelay: 0.3
     Damage: 1
     DamageOne: 1
     Range: 0

@@ -4,7 +4,6 @@ using Data;
 using Helpers;
 using Money;
 using UnityEngine;
-using Weapons;
 
 namespace Merging
 {
@@ -17,6 +16,8 @@ namespace Merging
         public MainGameConfig config;
         public MergingDataRepository repository;
         public List<MergingItemArea> areas;
+        
+        
         private void OnEnable()
         {
             if(DebugCount > 0)
@@ -32,7 +33,7 @@ namespace Merging
         public void CheckPurchasable()
         {
             var money = MoneyCounter.TotalMoney.Val;
-            var cost = config.FirstLevelCannonCost;
+            var cost = repository.GetPrevLevelCost();
             if (money < cost)
             {
                 HideAll();
@@ -69,23 +70,14 @@ namespace Merging
         public void TryPurchase(MergingItemArea area)
         {
             var money = MoneyCounter.TotalMoney.Val;
-            var cost = config.FirstLevelCannonCost;
+            var cost = repository.GetPrevLevelCost();
             if (money < cost)
                 return;
             MoneyCounter.TotalMoney.Val -= cost;
-            var data = repository.GetFirstLevel();
+            var data = repository.GetPrevLevel();
             area.SetData(data);
             area.PlayBuyEffect();
             OnPurchased?.Invoke(area);
-        }
-
-        public void ReturnMoney(CannonName cannonName)
-        {
-            var data = repository.GetData(cannonName);
-            var level = data.level;
-            var money = config.FirstLevelCannonCost * level;
-            Dbg.Green($"returning money. level: {level}, total {money}");
-            MoneyCounter.TotalMoney.Val += money;
         }
         
         
